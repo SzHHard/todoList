@@ -64,7 +64,7 @@ input_list.addEventListener("keydown", (event) => {
 
       } else {
         Cards.active.push(li1);
-        Cards.completed.splice(Cards.active.indexOf(li1), 1);
+        Cards.completed.splice(Cards.completed.indexOf(li1), 1);
         li1.firstElementChild.style.opacity = '1';
         li1.firstElementChild.style.textDecoration = 'none';
         doneCounter++;
