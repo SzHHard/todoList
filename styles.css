@@ -1,0 +1,42 @@
+.bigbox{
+    max-width: 1000px;
+
+    margin: 0 auto;
+}
+.bigbox li {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    border: 1px solid grey;
+    width: 400px;
+}
+
+h1{
+    text-align: center;
+    color: red;
+    opacity: 0.33;
+    font-size: 50px;
+}
+
+.checkbx {
+    /* width: 35px;
+    height: 35px;
+     border: 1px solid #ddd; 
+    outline: none; 
+    -webkit-appearance: none;
+    border-radius: 50%;
+    cursor: pointer; */
+    
+    
+    
+    /* снизу закомментирован чужой код - референс */ 
+    /* width: 1.3em;
+    height: 1.3em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer; */
+}
