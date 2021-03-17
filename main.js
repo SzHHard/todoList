@@ -49,12 +49,7 @@ input_list.addEventListener("keydown", (event) => {
     
 
     //
-    let button1 = document.createElement('button');
-    li1.appendChild(button1);
-    button1.innerText = 'del';
-    button1.addEventListener('click', () => {
-        li1.remove();
-    })
+   
     //
     let checkbx = document.createElement('input');
     checkbx.type = 'checkbox';
@@ -74,6 +69,19 @@ input_list.addEventListener("keydown", (event) => {
       howManyLeft.innerHTML = doneCounter;
     })
 
+    let button1 = document.createElement('button');
+    li1.appendChild(button1);
+    button1.innerText = 'del';
+    button1.addEventListener('click', () => {
+      if(li1.childNodes[2].checked)  {
 
+      }  else{
+        doneCounter--;
+        howManyLeft.innerHTML = doneCounter;
+      } 
+      
+      li1.remove();
+        
+    })
   }
 });
