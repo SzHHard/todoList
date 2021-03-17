@@ -43,8 +43,7 @@ input_list.addEventListener("keydown", (event) => {
     //
     Cards.all.push(li1);
     Cards.active.push(li1);
-    console.log(Cards.all); // самопроверка, потом удалить
-    console.log(Cards.active); // самопроверка, потом удалить
+  
     
     
 
@@ -100,16 +99,26 @@ const tableFooter = document.getElementById('table-footer');
 tableFooter.appendChild(buttonAll);
 tableFooter.appendChild(buttonActive);
 tableFooter.appendChild(buttonCompleted);
-buttonAll.addEventListener('click', () => {
 
+buttonAll.addEventListener('click', () => {
+  for(let i = list.children.length-1; i > 0; i--){
+    list.children[i].remove();
+  }
+  for(let i = 0; i < Cards.all.length; i++) {
+    list.appendChild(Cards.all[i]);
+  }
 });
 
 buttonActive.addEventListener('click', () => {
-  
+  for(let i = list.children.length-1; i > 0; i--){
+    list.children[i].remove();
+  }
+  for(let i = 0; i < Cards.active.length; i++) {
+    list.appendChild(Cards.active[i]);
+  }
 });
 
 buttonCompleted.addEventListener('click', () => {
-  // как пройтись по всем детям ul и удалить все li после чего воссоздать все li существующие в completed?
   for(let i = list.children.length-1; i > 0; i--){
     list.children[i].remove();
   }
