@@ -57,11 +57,15 @@ input_list.addEventListener("keydown", (event) => {
     li1.appendChild(checkbx);
     checkbx.addEventListener('change', () => {
       if (checkbx.checked) {
+        Cards.completed.push(li1);
+        Cards.active.splice(Cards.active.indexOf(li1), 1);
         li1.firstElementChild.style.opacity = '0.2';
         li1.firstElementChild.style.textDecoration = 'line-through';
         doneCounter--;
 
       } else {
+        Cards.active.push(li1);
+        Cards.completed.splice(Cards.active.indexOf(li1), 1);
         li1.firstElementChild.style.opacity = '1';
         li1.firstElementChild.style.textDecoration = 'none';
         doneCounter++;
@@ -84,4 +88,33 @@ input_list.addEventListener("keydown", (event) => {
         
     })
   }
+});
+
+const buttonAll = document.createElement('button');
+buttonAll.innerText = 'All';
+const buttonActive = document.createElement('button');
+buttonActive.innerText = 'Active';
+const buttonCompleted = document.createElement('button');
+buttonCompleted.innerText = 'Completed';
+const tableFooter = document.getElementById('table-footer');
+tableFooter.appendChild(buttonAll);
+tableFooter.appendChild(buttonActive);
+tableFooter.appendChild(buttonCompleted);
+buttonAll.addEventListener('click', () => {
+
+});
+
+buttonActive.addEventListener('click', () => {
+  
+});
+
+buttonCompleted.addEventListener('click', () => {
+  // как пройтись по всем детям ul и удалить все li после чего воссоздать все li существующие в completed?
+  for(let i = list.children.length-1; i > 0; i--){
+    list.children[i].remove();
+  }
+  for(let i = 0; i < Cards.completed.length; i++) {
+    list.appendChild(Cards.completed[i]);
+  }
+
 });
