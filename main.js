@@ -95,10 +95,13 @@ const buttonActive = document.createElement('button');
 buttonActive.innerText = 'Active';
 const buttonCompleted = document.createElement('button');
 buttonCompleted.innerText = 'Completed';
+const buttonClearCompleted = document.createElement('button');
+buttonClearCompleted.innerText = 'Clear Completed';
 const tableFooter = document.getElementById('table-footer');
 tableFooter.appendChild(buttonAll);
 tableFooter.appendChild(buttonActive);
 tableFooter.appendChild(buttonCompleted);
+tableFooter.appendChild(buttonClearCompleted);
 
 buttonAll.addEventListener('click', () => {
   for(let i = list.children.length-1; i > 0; i--){
@@ -125,5 +128,19 @@ buttonCompleted.addEventListener('click', () => {
   for(let i = 0; i < Cards.completed.length; i++) {
     list.appendChild(Cards.completed[i]);
   }
-
 });
+
+buttonClearCompleted.addEventListener('click', () => {
+  for(let i = list.children.length-1; i > 0; i--){
+    list.children[i].remove();
+  }
+  for(let i = 0; i < Cards.active.length; i++) {
+    list.appendChild(Cards.active[i]);
+  }
+   // перед этим из массива all нужно убрать все приколы, которые есть и здесь
+  Cards._all = Cards.all.filter(obj => {
+    return (Cards.completed.indexOf(obj) === -1);
+  })
+  Cards._completed = [];
+});
+
