@@ -67,7 +67,7 @@ input_list.addEventListener("keydown", (event) => {
     let button1 = document.createElement('button');
     li1.appendChild(button1);
     button1.className = 'del-but';
-    button1.innerText = 'del';
+    //button1.innerText = 'del';
     button1.addEventListener('click', () => {
       if(li1.childNodes[2].checked)  {
         Cards.all.splice(Cards.all.indexOf(li1), 1);
