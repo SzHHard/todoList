@@ -15,17 +15,9 @@ let Cards = {
   get completed(){
     return this._completed;
   },
-  set all(par){
-    if(typeof par === number) {
-    this._all = par;
-    }
-    else {
-      console.log('former line 23 par is not a number отладочка');
-    }
-  },
- 
-  
 };
+
+
 
 let doneCounter = 0;
 const howManyLeft = document.getElementById('how-many-left');
@@ -74,18 +66,18 @@ input_list.addEventListener("keydown", (event) => {
 
     let button1 = document.createElement('button');
     li1.appendChild(button1);
+    button1.className = 'del-but';
     button1.innerText = 'del';
     button1.addEventListener('click', () => {
       if(li1.childNodes[2].checked)  {
         Cards.all.splice(Cards.all.indexOf(li1), 1);
         Cards.completed.splice(Cards.completed.indexOf(li1), 1); // может она не попала в completed? вроде, попала
-        console.log('youve deleted a checked card');
+      
       }  else{
         Cards.all.splice(Cards.all.indexOf(li1), 1);
         Cards.active.splice(Cards.active.indexOf(li1), 1);
-        console.log('youve deleted an unchecked card');
         doneCounter--;
-         howManyLeft.innerHTML = doneCounter;
+        howManyLeft.innerHTML = doneCounter;
       } 
       
       li1.remove();
@@ -96,12 +88,14 @@ input_list.addEventListener("keydown", (event) => {
 
 const buttonAll = document.createElement('button');
 buttonAll.innerText = 'All';
+buttonAll.classList.add('but-all');
 const buttonActive = document.createElement('button');
 buttonActive.innerText = 'Active';
 const buttonCompleted = document.createElement('button');
 buttonCompleted.innerText = 'Completed';
 const buttonClearCompleted = document.createElement('button');
 buttonClearCompleted.innerText = 'Clear Completed';
+buttonClearCompleted.classList.add('clear-compl'); // добавляю класс ClearCompl
 const tableFooter = document.getElementById('table-footer');
 tableFooter.appendChild(buttonAll);
 tableFooter.appendChild(buttonActive);

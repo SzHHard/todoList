@@ -1,14 +1,50 @@
 .bigbox{
-    max-width: 1000px;
-
+    width: 1000px;
+    
+    border: 1px dotted orange;
     margin: 0 auto;
 }
+
+::-webkit-input-placeholder{
+    opacity: 0.7;
+}
+ul{
+    margin-bottom: 7px;
+}
+.table-footer{
+    width: 400px;
+    height: 25px;
+    margin: 2px auto;
+    padding-left: 50px;
+    font-size: 14px;
+}
+button{
+    font-size: 12px;
+}
+
+.clear-compl{
+    float: right;
+    margin-right: 5px;
+}
+
+#input-list{
+    width: 100%;
+    padding-left: 25px;
+    font-style: italic;
+    border: none;
+    grid-column: 1 / span 2;
+}
 .bigbox li {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 30px 1fr 30px;
+    grid-template-rows: 55px;
+    grid-auto-rows: 55px;
+    justify-content: center; 
     margin: 0 auto;
     border: 1px solid grey;
+    
     width: 400px;
+    height: 55px;
 }
 
 h1{
@@ -17,8 +53,20 @@ h1{
     opacity: 0.33;
     font-size: 50px;
 }
+.del-but{
+   grid-row-start: 1;
+   grid-column-start: 3;
+   align-self: center;
+}
+.but-all{
+    margin-left: 35px;
+}
+
 
 .checkbx {
+  grid-row-start: 1;
+  align-self: center;
+
     /* width: 35px;
     height: 35px;
      border: 1px solid #ddd; 
