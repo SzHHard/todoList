@@ -77,10 +77,15 @@ input_list.addEventListener("keydown", (event) => {
     button1.innerText = 'del';
     button1.addEventListener('click', () => {
       if(li1.childNodes[2].checked)  {
-
+        Cards.all.splice(Cards.all.indexOf(li1), 1);
+        Cards.completed.splice(Cards.completed.indexOf(li1), 1); // может она не попала в completed? вроде, попала
+        console.log('youve deleted a checked card');
       }  else{
+        Cards.all.splice(Cards.all.indexOf(li1), 1);
+        Cards.active.splice(Cards.active.indexOf(li1), 1);
+        console.log('youve deleted an unchecked card');
         doneCounter--;
-        howManyLeft.innerHTML = doneCounter;
+         howManyLeft.innerHTML = doneCounter;
       } 
       
       li1.remove();
