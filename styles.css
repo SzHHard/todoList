@@ -23,19 +23,32 @@ ul{
     padding-left: 50px;
     font-size: 14px;
 }
+
+
+button{
+    font-size: 13px;
+    outline: none;
+}
 .table-footer button{
     border: none;
     background-color: transparent;
 }
-
+.but-all{
+    margin-left: 35px;
+    
+   
+       
+}
+.btnclicked{
+    border: 1px dotted rosybrown !important;
+}
+ 
 
 
 .table-footer button:hover{
     border: 1px dotted rosybrown;
     background-color: transparent;
 }
-
-
 
 
 .clear-compl{
@@ -100,18 +113,7 @@ h1{
     color: rgb(221, 119, 119);
 }
 
-button{
-    font-size: 13px;
-    outline: none;
-}
-.but-all{
-    margin-left: 35px;
-    
-    border: 1px dotted rosybrown;
-       
-}
 
- 
 
 .checkbx {
   grid-row-start: 1;
@@ -152,3 +154,4 @@ button{
     margin-left: 7px;
 
 }
+

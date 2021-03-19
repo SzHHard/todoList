@@ -88,7 +88,7 @@ input_list.addEventListener("keydown", (event) => {
 
 const buttonAll = document.createElement('button');
 buttonAll.innerText = 'All';
-buttonAll.classList.add('but-all');
+buttonAll.classList.add('but-all', 'btnclicked');
 const buttonActive = document.createElement('button');
 buttonActive.innerText = 'Active';
 const buttonCompleted = document.createElement('button');
@@ -109,6 +109,9 @@ buttonAll.addEventListener('click', () => {
   for(let i = 0; i < Cards.all.length; i++) {
     list.appendChild(Cards.all[i]);
   }
+  buttonAll.classList.add('btnclicked');
+  buttonCompleted.classList.remove('btnclicked');
+  buttonActive.classList.remove('btnclicked');
 });
 
 buttonActive.addEventListener('click', () => {
@@ -118,6 +121,9 @@ buttonActive.addEventListener('click', () => {
   for(let i = 0; i < Cards.active.length; i++) {
     list.appendChild(Cards.active[i]);
   }
+  buttonActive.classList.add('btnclicked');
+  buttonAll.classList.remove('btnclicked');
+  buttonCompleted.classList.remove('btnclicked');
 });
 
 buttonCompleted.addEventListener('click', () => {
@@ -127,6 +133,9 @@ buttonCompleted.addEventListener('click', () => {
   for(let i = 0; i < Cards.completed.length; i++) {
     list.appendChild(Cards.completed[i]);
   }
+  buttonCompleted.classList.add('btnclicked');
+  buttonAll.classList.remove('btnclicked');
+  buttonActive.classList.remove('btnclicked');
 });
 
 buttonClearCompleted.addEventListener('click', () => {
