@@ -13,7 +13,10 @@ body{
 }
 
 ::-webkit-input-placeholder{
-    opacity: 0.7;
+    opacity: 0.4;
+    font-size: 17px;
+    font-style: italic;
+    
 }
 ul{
     margin-top: 0;
@@ -67,8 +70,11 @@ button{
     width: 373px;
     outline: none;
     padding-left: 25px;
-    font-style: italic;
+    padding-top: 10px;
+    
     border: none;
+    font-size: 17px;
+    font-weight: 100;
     grid-column: 1 / span 2;
 }
 .bigbox li {
@@ -88,8 +94,8 @@ button{
 
 h1{
     text-align: center;
-    color: red;
-    opacity: 0.33;
+    color: rgba(175, 47, 47, 0.15);
+    
     font-size: 50px;
 }
 .del-but{
