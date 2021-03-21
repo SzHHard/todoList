@@ -12,7 +12,7 @@ body{
     /* box-shadow: 0 -4 0px rgba(66, 22, 22, 0.5); */
 }
 
-::-webkit-input-placeholder{
+.label::placeholder{
     opacity: 0.4;
     font-size: 17px;
     font-style: italic;
@@ -133,32 +133,13 @@ h1{
 .checkbx {
   grid-row-start: 1;
   align-self: center;
-  -webkit-appearance: none;
+  appearance: none;
     border: 1px solid #ddd;
     width: 27px;
     height: 27px;
     border-radius: 50%;
     outline: none;
-    /* width: 35px;
-    height: 35px;
-     border: 1px solid #ddd; 
-    outline: none; 
-    -webkit-appearance: none;
-    border-radius: 50%;
-    cursor: pointer; */
     
-    
-    
-    /* снизу закомментирован чужой код - референс */ 
-    /* width: 1.3em;
-    height: 1.3em;
-    background-color: white;
-    border-radius: 50%;
-    vertical-align: middle;
-    border: 1px solid #ddd;
-    -webkit-appearance: none;
-    outline: none;
-    cursor: pointer; */
 }
 .checkbx:checked::before{
     content: "✓";
