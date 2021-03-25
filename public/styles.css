@@ -1,0 +1,153 @@
+
+body{
+    background: #f5f5f5; 
+}
+
+.bigbox{
+    width: 410px;
+    background: white;
+    border: 1px solid #e6e6e6;
+    margin: 0 auto;
+    /* box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgb(0 0 0 / 20%), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgb(0 0 0 / 20%); */
+    /* box-shadow: 0 -4 0px rgba(66, 22, 22, 0.5); */
+}
+
+.label::placeholder{
+    opacity: 0.4;
+    font-size: 17px;
+    font-style: italic;
+    
+}
+ul{
+    margin-top: 0;
+    padding-left: 0;
+    margin-bottom: 7px;
+}
+.table-footer{
+    width: 400px;
+    height: 25px;
+    margin: 0 auto;
+    padding-left: 10px;
+    font-size: 14px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 
+    0 8px 0 -3px white, 0 9px 1px -3px rgb(0 0 0 / 20%), 
+    0 16px 0 -6px white, 0 17px 2px -6px rgb(0 0 0 / 20%);
+}
+
+
+button{
+    font-size: 13px;
+    outline: none;
+}
+.table-footer button{
+    border: none;
+    background-color: transparent;
+}
+.but-all{
+    margin-left: 35px;
+    
+   
+       
+}
+.btnclicked{
+    border: 1px dotted rosybrown !important;
+}
+ 
+
+
+.table-footer button:hover{
+    border: 1px dotted rosybrown;
+    background-color: transparent;
+}
+
+
+.clear-compl{
+    float: right;
+    margin-right: 5px;
+}
+
+#input-list{
+    width: 373px;
+    outline: none;
+    padding-left: 25px;
+    padding-top: 10px;
+    
+    border: none;
+    font-size: 17px;
+    font-weight: 100;
+    grid-column: 1 / span 2;
+}
+.bigbox li {
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    grid-template-rows: 55px;
+    grid-auto-rows: 55px;
+    justify-content: center; 
+    margin: 0 auto;
+    font-size: 18px;
+    width: 400px;
+    width: 100%;
+    height: 55px;
+    border-bottom: 1px solid #e6e6e6;
+    border-top: none;
+}
+
+h1{
+    text-align: center;
+    color: rgba(175, 47, 47, 0.15);
+    
+    font-size: 50px;
+}
+.del-but{
+   grid-row-start: 1;
+   grid-column-start: 3;
+   align-self: center;
+   margin-right: 5px;
+   width: 35px;
+   height: 50px;
+      visibility: hidden;
+    
+   
+   /* background: none;
+   outline: none;
+   border: none; */
+}
+.del-but::after{
+    content: "⨯";
+    visibility: visible;
+    display: block;
+    
+    color: rgb(212, 175, 164);
+    font-size: 30px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+}
+
+.del-but:hover::after{
+    color: rgb(221, 119, 119);
+}
+
+
+
+.checkbx {
+  grid-row-start: 1;
+  align-self: center;
+  appearance: none;
+    border: 1px solid #ddd;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    outline: none;
+    
+}
+.checkbx:checked::before{
+    content: "✓";
+    color: rgb(57, 196, 103);
+    width: 18px;
+    height: 18px;
+    font-size: 19px;
+    margin-left: 7px;
+
+}
+
