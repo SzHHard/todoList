@@ -1,21 +1,28 @@
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('../db.sqlite');
 
+
+/**
+ * Clears table of all tasks
+ * @param {Callback} done 
+ */
+function clearTable(done) {
+    db.run("DROP TABLE tasks", done)
+}
+
 /**
  * Creates a new Tasks Table
  * @param {Callback} done 
  */
-function createTable() {
+function createTable(done) {
     db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT)', (err) => {
-        // if(err.message == "SQLITE_ERROR: table tasks already exists") {
-        //      done()
-        // } else {
+        if(err && err.message == "SQLITE_ERROR: table tasks already exists") {
+             done()
+        } else {
 
-        //     done(err)
-        // }
-        if(err) {
-            console.log(err);
+            done(err)
         }
+        
     });
 }
 
@@ -43,7 +50,7 @@ function getTask(id, done) {
  * @param {Callback} done 
  */
 function insertTask(task, done) {
-    db.run(`INSERT INTO tasks (id, content) VALUES (1, "$task")`, { $task: task }, done);
+    db.run("INSERT INTO tasks (id, content) VALUES (1, $task)", { $task: task }, done);
 }
 
 /**
@@ -58,5 +65,5 @@ function deleteTask(id, done) {
 }
 
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, db }
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks,clearTable, db }
 
