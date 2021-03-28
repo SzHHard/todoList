@@ -49,8 +49,9 @@ function getTask(id, done) {
  * @param {Task Text} task 
  * @param {Callback} done 
  */
+    let id = 1;
 function insertTask(task, done) {
-    db.run("INSERT INTO tasks (id, content) VALUES (1, $task)", { $task: task }, done);
+    db.run("INSERT INTO tasks (id, content) VALUES ($id, $task)", { $id: id++, $task: task }, done);
 }
 
 /**
@@ -64,6 +65,18 @@ function deleteTask(id, done) {
     }, done)
 }
 
+ function countRows(done) {
+    db.get('SELECT COUNT(*) FROM tasks', done) /* (err, row) => {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(row['COUNT(*)']);
+            return row['COUNT(*)'];
+            
+        } */
+    // });
+}
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks,clearTable, db }
+
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks,clearTable, countRows, db, id }
 

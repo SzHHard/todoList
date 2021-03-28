@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db');
 
-const tasks = [];
+
 
 router.use(express.json())
 router.get('/tasks', (req, res) => {   
@@ -14,7 +14,6 @@ router.get('/tasks', (req, res) => {
 router.post('/tasks', (req, res, next) => {
     const newElement = {text: req.body.text}; 
     if(newElement) {
-        //tasks.push(newElement.text);
         db.insertTask(newElement.text, (err) => {
             res.status(201).send(newElement);
         });
@@ -25,18 +24,27 @@ router.post('/tasks', (req, res, next) => {
 });
 
 router.get('/tasks/:id', (req, res) => {
-    const task = tasks[req.params.id - 1];
     
-    if(task) {
-        res.send({task: task});
-    } else {
-        res.status(400).send();
-    }
+    db.getTask(req.params.id, (err, row) => {
+        if(row) {
+            res.send(row);
+        } else {
+           
+            res.status(400).send();
+        }
+    });
+    
 });
 
 router.delete('/tasks/:id', (req, res) => {
-    tasks.splice(req.query.id-1, 1);
-    res.status(204).send();
+    db.deleteTask(req.params.id, (err) => {
+        if(err) {
+            console.log(err);
+        } else {
+            res.status(204).send();
+        }
+    })
+        
 });
 
 

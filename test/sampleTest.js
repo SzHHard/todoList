@@ -14,6 +14,11 @@ describe('todoList api v1', function () {
             db.createTable(done)
         })
     })
+    // after((done) => {
+    //     db.clearTable(() => {
+    //         done();
+    //     })
+    // })
     describe('/tasks', function () {
 
         it('on GET should return tasks', function (done) {
@@ -65,17 +70,35 @@ describe('todoList api v1', function () {
             it('on DELETE should remove a task', (done) => {
                 request(app)
                     .post('/tasks')
-                    .send({ test: "hello, world" })
+                    .send({ text: "DELETE test" })
                     .end(() => {
+                        let lengthAfterAdd = -1;
+                        db.countRows((err, row) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                            
+                                lengthAfterAdd = row['COUNT(*)'];
+                            }
+                        });
+
                         request(app)
                             .delete('/tasks/1')
                             .expect(204)
                             .end(() => {
+                                let newLength = -1;
+                                db.countRows((err, row) => {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        newLength = row['COUNT(*)'];
+                                    }
+                                });
                                 request(app)
                                     .get('/tasks')
                                     .expect(200)
                                     .expect((res) => {
-                                        assert.strictEqual(res.body.length, 0)
+                                        assert.strictEqual(newLength + 1, lengthAfterAdd);
                                     })
                                     .end(done)
                             })
