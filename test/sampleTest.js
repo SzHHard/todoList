@@ -21,6 +21,8 @@ describe('todoList api v1', function () {
                 .end(done);
         });
 
+        
+
         it('on POST should create a task', (done) => {
             request(app)
                 .post('/tasks')
@@ -38,6 +40,20 @@ describe('todoList api v1', function () {
                 })
 
         });
+        it('on GET should return the requested task', (done) => {
+            request(app)
+                .post('/tasks')
+                .send({ text: "hello, world" })
+                .set('Accept', 'application.json')
+                .end( () => {
+                    request(app)
+                        .get('/tesks/0')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end(done)
+                })
+        })
 
         it('on DELETE should remove a task', (done) => {
             request(app)
@@ -89,7 +105,7 @@ describe('todoList api v1', function () {
             it('on PUT should return 400 if invalid task id', (done) => {
                 request(app)
                     .put('/tasks/1938427?completed=true')
-                    expect(400)
+                    .expect(400)
                     .end(done)
             })
         })

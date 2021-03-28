@@ -19,4 +19,18 @@ router.post('/tasks', (req, res, next) => {
     }
 });
 
+router.get('/tasks/:id', (req, res, next) => {
+    const task = tasks[req.params.id];
+    
+    console.log('--------------------------------' + req.params.id);
+
+    if(task) {
+        res.send(task);
+    } else {
+        res.status(400).send();
+    }
+});
+
+
+
 module.exports = router;

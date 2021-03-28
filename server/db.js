@@ -5,13 +5,16 @@ const db = new sqlite3.Database('../db.sqlite');
  * Creates a new Tasks Table
  * @param {Callback} done 
  */
-function createTable(done) {
+function createTable() {
     db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT)', (err) => {
-        if(err.message == "SQLITE_ERROR: table tasks already exists") {
-             done()
-        } else {
+        // if(err.message == "SQLITE_ERROR: table tasks already exists") {
+        //      done()
+        // } else {
 
-            done(err)
+        //     done(err)
+        // }
+        if(err) {
+            console.log(err);
         }
     });
 }
