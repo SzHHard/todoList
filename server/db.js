@@ -6,7 +6,14 @@ const db = new sqlite3.Database('../db.sqlite');
  * @param {Callback} done 
  */
 function createTable(done) {
-    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT)', done);
+    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT)', (err) => {
+        if(err.message == "SQLITE_ERROR: table tasks already exists") {
+             done()
+        } else {
+
+            done(err)
+        }
+    });
 }
 
 /**
@@ -48,5 +55,5 @@ function deleteTask(id, done) {
 }
 
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks }
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, db }
 

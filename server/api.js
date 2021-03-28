@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./sqliteDb');
+const db = require('./db');
 
-const tasks = ['testString'];
+const tasks = [];
 
+router.use(express.json())
 router.get('/tasks', (req, res, next) => {   
     res.send(tasks);
 });
 
 router.post('/tasks', (req, res, next) => {
-    const newElement = {name: req.query.name}; 
+    const newElement = {text: req.body.text}; 
     if(newElement) {
-        tasks.push(newElement);
+        tasks.push(newElement.text);
         res.status(201).send(newElement);
     }  else {
         res.status(400).send();
