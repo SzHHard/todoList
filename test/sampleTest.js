@@ -108,24 +108,35 @@ describe('todoList api v1', function () {
             it('on PUT should update the task to completed', (done) => {
                 request(app)
                     .post('/tasks')
-                    .send({ test: "hello, world" })
+                    .send({ text: "putTest" })
                     .end(() => {
                         request(app)
-                            .put('/tasks/1?completed=true')
+                            .put(`/tasks/${db.getGreatestId()-1}?active=false`)
                             .expect(200)
+                            .expect(() => {
+                                db.getTask(db.getGreatestId()-1, (err, row) => {
+                                    assert.strictEqual(row.active, 0);  
+                                });
+                            })
                             .end(done)
                     });
             });
+            
             it('on PUT should update the task to active', (done) => {
                 request(app)
-                    .post('/tasks')
-                    .send({ test: "hello, world" })
-                    .end(() => {
-                        request(app)
-                            .put('/tasks/1?completed=false')
-                            .expect(200)
-                            .end(done)
-                    })
+                .post('/tasks')
+                .send({ text: "hello, world" })
+                .end(() => {
+                    request(app)
+                        .put(`/tasks/${db.getGreatestId() - 1}?active=true`)
+                        .expect(200)
+                        .expect(() => {
+                            db.getTask(db.getGreatestId() - 1, (err, row) => {
+                                assert.strictEqual(row.active, 1);  
+                            });
+                        })
+                        .end(done)
+                });
             });
 
 

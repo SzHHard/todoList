@@ -70,20 +70,20 @@ function countRows(done) {
 }
 
 /**
- * 
- * @param {1 or 0} active 
- * @param {Task Id} id 
+ * Change the state of the task
+ * @param {1 or 0 number} active 
+ * @param {Task Id number} id 
  */
-function switchActive(active, id) {
-    db.run('UPDATE table SET active = $active WHERE id = $id', {
+function switchActive(active, id, done) {
+    db.run('UPDATE tasks SET active = $active WHERE id = $id', {
         $active: active,
         $id: id
-    }, (err) => {
-        if (err) {
-            console.log(err);
-        }
-    });
+    }, done);
 }
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, db, id }
+function getGreatestId() {
+    return id;
+}
+
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, getGreatestId }
 

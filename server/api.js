@@ -39,7 +39,7 @@ router.get('/tasks/:id', (req, res) => {
 router.delete('/tasks/:id', (req, res) => {
 
     db.getTask(req.params.id, (error, row) => {
-        if(row) {
+        if (row) {
             db.deleteTask(req.params.id, (err) => {
                 if (err) {
                     console.log(err);
@@ -52,6 +52,34 @@ router.delete('/tasks/:id', (req, res) => {
         }
     });
 });
+
+router.put('/tasks/:id', (req, res) => {
+
+    //создать проверку на существование строки с выбранным id
+    db.getTask(req.params.id, (err, row) => {
+        if (row) {
+            let state = req.query.active;
+            //console.log(state) // отладочка
+            switch (state) {
+                case 'true':
+                    state = 1;
+                    break;
+                case 'false':
+                    state = 0;
+                    break;
+                default: console.log('You had to pass "true" or "false" to the PUT query');
+            }
+            db.switchActive(state, req.params.id, (err) => {
+
+                res.send();
+
+            });
+        } else
+        res.status(400).send();
+    })
+
+
+})
 
 
 module.exports = router;
