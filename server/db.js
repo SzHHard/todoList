@@ -15,14 +15,14 @@ function clearTable(done) {
  * @param {Callback} done 
  */
 function createTable(done) {
-    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT)', (err) => {
-        if(err && err.message == "SQLITE_ERROR: table tasks already exists") {
-             done()
+    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT, active INTEGER DEFAULT(1))', (err) => {
+        if (err && err.message == "SQLITE_ERROR: table tasks already exists") {
+            done()
         } else {
 
             done(err)
         }
-        
+
     });
 }
 
@@ -49,7 +49,7 @@ function getTask(id, done) {
  * @param {Task Text} task 
  * @param {Callback} done 
  */
-    let id = 1;
+let id = 1;
 function insertTask(task, done) {
     db.run("INSERT INTO tasks (id, content) VALUES ($id, $task)", { $id: id++, $task: task }, done);
 }
@@ -65,18 +65,25 @@ function deleteTask(id, done) {
     }, done)
 }
 
- function countRows(done) {
-    db.get('SELECT COUNT(*) FROM tasks', done) /* (err, row) => {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(row['COUNT(*)']);
-            return row['COUNT(*)'];
-            
-        } */
-    // });
+function countRows(done) {
+    db.get('SELECT COUNT(*) FROM tasks', done)
 }
 
+/**
+ * 
+ * @param {1 or 0} active 
+ * @param {Task Id} id 
+ */
+function switchActive(active, id) {
+    db.run('UPDATE table SET active = $active WHERE id = $id', {
+        $active: active,
+        $id: id
+    }, (err) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks,clearTable, countRows, db, id }
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, db, id }
 
