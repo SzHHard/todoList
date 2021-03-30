@@ -16,19 +16,19 @@ const sendRequest = () => {
 }, networkError => console.log(networkError.message));
 }
 
-  sendRequest().then(data => {
-      console.log(data);
-      for(let i = 0; i < data.length; i++) {
-        if(data[i].active === 1) {
-          Cards.all.push(data[i].content);
-          Cards.active.push(data[i].content);
-        } 
-        if(data[i].active === 0) {
-          Cards.all.push(data[i].content);
-          Cards.completed.push(data[i].content);
-        }
-      }
-  }).catch(err => console.log(err));
+  // sendRequest().then(data => {
+  //     console.log(data);
+  //     for(let i = 0; i < data.length; i++) {
+  //       if(data[i].active === 1) {
+  //         Cards.all.push(data[i].content);
+  //         Cards.active.push(data[i].content);
+  //       } 
+  //       if(data[i].active === 0) {
+  //         Cards.all.push(data[i].content);
+  //         Cards.completed.push(data[i].content);
+  //       }
+  //     }
+  // }).catch(err => console.log(err));
 
 //window.onload = sendRequest;
 
@@ -50,14 +50,14 @@ let Cards = {
 
 
 
-let doneCounter = 0;
+let activeCounter = 0;
 const howManyLeft = document.getElementById('how-many-left');
 
 input_list.addEventListener("keydown", (event) => {
 
   if (event.code === "Enter") {
-    doneCounter++;
-    howManyLeft.innerHTML = doneCounter;
+    activeCounter++;
+    howManyLeft.innerHTML = activeCounter;
     let inp = input_list.value;
     input_list.value = '';
     let li1 = document.createElement('li');
@@ -89,16 +89,16 @@ input_list.addEventListener("keydown", (event) => {
         Cards.active.splice(Cards.active.indexOf(li1), 1);
         li1.firstElementChild.style.opacity = '0.2';
         li1.firstElementChild.style.textDecoration = 'line-through'; //сюда ткнуть PUT запрос на active: false
-        doneCounter--;
+        activeCounter--;
 
       } else {
         Cards.active.push(li1);
         Cards.completed.splice(Cards.completed.indexOf(li1), 1);   
         li1.firstElementChild.style.opacity = '1';
         li1.firstElementChild.style.textDecoration = 'none';
-        doneCounter++;                                                //сюда ткнуть PUT запрос на active: true
+        activeCounter++;                                                //сюда ткнуть PUT запрос на active: true
       }
-      howManyLeft.innerHTML = doneCounter;
+      howManyLeft.innerHTML = activeCounter;
     })
 
     let button1 = document.createElement('button');
@@ -113,8 +113,8 @@ input_list.addEventListener("keydown", (event) => {
       } else {
         Cards.all.splice(Cards.all.indexOf(li1), 1);
         Cards.active.splice(Cards.active.indexOf(li1), 1);
-        doneCounter--;
-        howManyLeft.innerHTML = doneCounter;
+        activeCounter--;
+        howManyLeft.innerHTML = activeCounter;
       }
 
       li1.remove(); // сюда ткнуть DELETE запрос 
