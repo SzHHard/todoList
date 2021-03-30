@@ -2,6 +2,37 @@ var list = document.getElementById("todo-list");
 var input_list = document.getElementById("input-list");
 
 
+const server = 'http://localhost:3000/api';
+const urlForGetAllRequest = server + '/tasks';
+
+let getAllResponse = 0;
+const sendRequest = () => { 
+ return fetch(urlForGetAllRequest).then(response => {
+  if(response.ok) {
+    return(response.json());
+  }  else{
+  throw new Error('Request failed');
+  }
+}, networkError => console.log(networkError.message));
+}
+
+  sendRequest().then(data => {
+      console.log(data);
+      for(let i = 0; i < data.length; i++) {
+        if(data[i].active === 1) {
+          Cards.all.push(data[i].content);
+          Cards.active.push(data[i].content);
+        } 
+        if(data[i].active === 0) {
+          Cards.all.push(data[i].content);
+          Cards.completed.push(data[i].content);
+        }
+      }
+  }).catch(err => console.log(err));
+
+//window.onload = sendRequest;
+
+
 let Cards = {
   _all: [],
   _active: [],
@@ -57,15 +88,15 @@ input_list.addEventListener("keydown", (event) => {
         Cards.completed.push(li1);
         Cards.active.splice(Cards.active.indexOf(li1), 1);
         li1.firstElementChild.style.opacity = '0.2';
-        li1.firstElementChild.style.textDecoration = 'line-through';
+        li1.firstElementChild.style.textDecoration = 'line-through'; //сюда ткнуть PUT запрос на active: false
         doneCounter--;
 
       } else {
         Cards.active.push(li1);
-        Cards.completed.splice(Cards.completed.indexOf(li1), 1);
+        Cards.completed.splice(Cards.completed.indexOf(li1), 1);   
         li1.firstElementChild.style.opacity = '1';
         li1.firstElementChild.style.textDecoration = 'none';
-        doneCounter++;
+        doneCounter++;                                                //сюда ткнуть PUT запрос на active: true
       }
       howManyLeft.innerHTML = doneCounter;
     })
@@ -86,8 +117,8 @@ input_list.addEventListener("keydown", (event) => {
         howManyLeft.innerHTML = doneCounter;
       }
 
-      li1.remove();
-
+      li1.remove(); // сюда ткнуть DELETE запрос 
+                                    
     })
   }
 });

@@ -49,7 +49,7 @@ function getTask(id, done) {
  * @param {Task Text} task 
  * @param {Callback} done 
  */
-let id = 1;
+let id = countRows( (err, row) => {return row}) || 1;
 function insertTask(task, done) {
     db.run("INSERT INTO tasks (id, content) VALUES ($id, $task)", { $id: id++, $task: task }, done);
 }
