@@ -15,7 +15,17 @@ router.post('/tasks', (req, res, next) => {
     const newElement = { text: req.body.text };
     if (newElement) {
         db.insertTask(newElement.text, (err) => {
-            res.status(201).send(newElement);
+          let id = 0;
+           db.getTask(db.getGreatestId-1, (err, row) => {
+                if(err) {
+                    console.log(err);
+                }   else {
+                    console.log(row.id);
+                    id = row.id;
+                }
+            });
+
+            res.status(201).send(id);
         });
 
     } else {

@@ -6,7 +6,7 @@ const server = 'http://localhost:3000/api';
 const urlForGetAllRequest = server + '/tasks';
 
 let getAllResponse = 0;
-
+                                                                //clearCompleted пока не работает
 const sendRequest = () => {
   return fetch(urlForGetAllRequest).then(response => {
     if (response.ok) {
@@ -20,15 +20,15 @@ const sendRequest = () => {
 sendRequest().then(data => {
   console.log(data);
   for (let i = 0; i < data.length; i++) {
+    let li1 = 0; 
     if (data[i].active === 1) {
       View.incrementActiveCounter();
-      const li1 = Controller.createNewListItem(data[i].content);
+      li1 = Controller.createNewListItem(data[i].content);
       let checkbx = Controller.createCheckboxForLi(li1);
       Controller.createDeleteButtonForLi(li1);
     }
     if (data[i].active === 0) {
-
-      const li1 = Controller.createNewListItem(data[i].content);
+      li1 = Controller.createNewCompletedListItem(data[i].content);
       li1.firstElementChild.style.opacity = '0.2';
       li1.firstElementChild.style.textDecoration = 'line-through';
       let checkbx = Controller.createCheckboxForLi(li1);
@@ -36,6 +36,8 @@ sendRequest().then(data => {
 
       Controller.createDeleteButtonForLi(li1);
     }
+    li1.id = data[i].id;
+    console.log(li1.id);
   }
 }).catch(err => console.log(err));
 
@@ -60,8 +62,12 @@ const Model = {
     },
   },
   pushNewActiveTask(task) {
-    this.Cards.all.push(task);
+    this.Cards.all.push(task); // здесь вместо task сделать объект с полем task. В другом месте в этот объект будем пихать id. Потом по этому id будем удалять и изменять необходимые элементы.
     this.Cards.active.push(task);
+  },
+  pushNewCompletedTask(task) {
+    this.Cards.all.push(task);
+    this.Cards.completed.push(task);
   }
 
 }
@@ -93,6 +99,12 @@ const Controller = {
     return li1;
   },
 
+  createNewCompletedListItem(taskText) {
+    const li1 = View.renderNewListItem(taskText);
+    Model.pushNewCompletedTask(li1);
+    return li1;
+  },
+
   createCheckboxForLi(li1) {                                   // Это не MVC, но пока так
     let checkbx = document.createElement('input');
     checkbx.type = 'checkbox';
@@ -105,6 +117,10 @@ const Controller = {
         li1.firstElementChild.style.opacity = '0.2';
         li1.firstElementChild.style.textDecoration = 'line-through';
         View.decrementActiveCounter();
+        
+        fetch(urlForGetAllRequest + '/' + li1.id + '?active=false', {
+          method: 'PUT',
+        })
 
       } else {
         Model.Cards.active.push(li1);
@@ -112,6 +128,10 @@ const Controller = {
         li1.firstElementChild.style.opacity = '1';
         li1.firstElementChild.style.textDecoration = 'none';
         View.incrementActiveCounter();
+
+        fetch(urlForGetAllRequest + '/' + li1.id + '?active=true', {
+          method: 'PUT',
+        })
       }
 
     })
@@ -135,7 +155,11 @@ const Controller = {
       }
 
       
-      //fetch(urlForGetAllRequest/*id*/)
+      fetch(urlForGetAllRequest + '/' + li1.id, {
+        method: 'DELETE', 
+      });
+
+      
 
       li1.remove();
 
@@ -154,15 +178,35 @@ input_list.addEventListener("keydown", (event) => {
     Controller.createDeleteButtonForLi(li1);
 
     //console.log(li1);
-    //console.log(li1.firstElementChild);
+    
+    
     fetch(urlForGetAllRequest, {
       method: 'POST',
       body: JSON.stringify({                          //зачем нужен json stringify?
         text: li1.firstElementChild.innerHTML
       }),
       headers: {'Content-Type': 'application/json'} 
-    })
-    
+    }) /* .then( (res) => {
+      console.log(res);
+      return res.json();
+      //li1.id = res.id;
+      //console.log(li1.id)
+    }).then(data => {
+      console.log(data);
+      li1.id = data;
+    }) */
+
+    ////////////////////
+
+    // let response = await fetch(urlForGetAllRequest, {
+    //   method: 'POST',
+    //   body: JSON.stringify({                          //зачем нужен json stringify?
+    //     text: li1.firstElementChild.innerHTML
+    //   }),
+    //   headers: {'Content-Type': 'application/json'} 
+    // })
+    //   let result = await response.json();
+    //   li1.id = result;
   }
 });
 
