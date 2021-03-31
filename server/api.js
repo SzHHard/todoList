@@ -16,16 +16,18 @@ router.post('/tasks', (req, res, next) => {
     if (newElement) {
         db.insertTask(newElement.text, (err) => {
           let id = 0;
-           db.getTask(db.getGreatestId-1, (err, row) => {
+           db.getTask(db.getGreatestId() - 1, (err, row) => {
                 if(err) {
                     console.log(err);
                 }   else {
-                    console.log(row.id);
+                    console.log('row id: ' + row.id);
                     id = row.id;
+                    console.log('id:' + id);
+                    res.status(201).send({id: id});
                 }
             });
-
-            res.status(201).send(id);
+           
+            //.json();
         });
 
     } else {

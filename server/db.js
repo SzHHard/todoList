@@ -49,7 +49,40 @@ function getTask(id, done) {
  * @param {Task Text} task 
  * @param {Callback} done 
  */
-let id = countRows( (err, row) => {return row}) || 1;
+
+//  let id = {id: -1};
+
+//  countRows( (err, row) => {
+//     console.log('rowcount: ' + row['COUNT(*)']);
+//     id.id = row['COUNT(*)'];
+// })
+// console.log('id.id: ' + id.id);
+// id = id.id || 1;
+// console.log('id: ' + id);
+
+ let id = countRows( (err, row) => {return row['COUNT(*)']}) || 1; // как пофиксить асинхронность? 
+
+
+
+ 
+//let id = {id: 0};
+
+// const changeId = () =>  {
+//     id.id = 10;
+//     countRows( (err, row) => {
+//         console.log('row: ' + row['COUNT(*)']);
+//         id.id = row['COUNT(*)'];
+//         console.log('inner inner: ' + id.id);
+//     });
+//     console.log('inner ' +id);
+// }
+// changeId(); 
+// id = id.id;
+// console.log(id);
+
+
+
+
 function insertTask(task, done) {
     db.run("INSERT INTO tasks (id, content) VALUES ($id, $task)", { $id: id++, $task: task }, done);
 }

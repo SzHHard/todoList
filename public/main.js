@@ -186,15 +186,17 @@ input_list.addEventListener("keydown", (event) => {
         text: li1.firstElementChild.innerHTML
       }),
       headers: {'Content-Type': 'application/json'} 
-    }) /* .then( (res) => {
+    }) .then( (res) => {
       console.log(res);
       return res.json();
-      //li1.id = res.id;
-      //console.log(li1.id)
-    }).then(data => {
+     // return res.text();
+    //  li1.id = res.id;
+    //  console.log(li1.id)
+    }) .then(data => {
       console.log(data);
-      li1.id = data;
-    }) */
+      li1.id = data.id;
+      console.log(li1.id);
+    }) 
 
     ////////////////////
 
