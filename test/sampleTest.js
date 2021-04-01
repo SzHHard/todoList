@@ -30,6 +30,22 @@ describe('todoList api v1', function () {
                 .end(done);
         });
 
+        // it('on GET should return the id if there\'s a query string with content and status', () => {
+        //     request(app)
+        //         .post('/tasks')
+        //         .send({ text: "find me" })
+        //         .set('Accept', 'application/json')
+        //         .end((done) => {
+        //             request(app)
+        //                 .get('/tasks?content=find+me&ative=0')
+        //                 .set('Accept', 'application/json')
+        //                 .expect('Content-Type', /json/)
+        //                 .expect(200)
+        //                 .end(done)
+        //         })
+
+        // });
+
 
 
         it('on POST should create a task', (done) => {
@@ -77,7 +93,7 @@ describe('todoList api v1', function () {
                             if (err) {
                                 console.log(err);
                             } else {
-                            
+
                                 lengthAfterAdd = row['COUNT(*)'];
                             }
                         });
@@ -111,32 +127,32 @@ describe('todoList api v1', function () {
                     .send({ text: "putTest" })
                     .end(() => {
                         request(app)
-                            .put(`/tasks/${db.getGreatestId()-1}?active=false`)
+                            .put(`/tasks/${db.getGreatestId() - 1}?active=false`)
                             .expect(200)
                             .expect(() => {
-                                db.getTask(db.getGreatestId()-1, (err, row) => {
-                                    assert.strictEqual(row.active, 0);  
+                                db.getTask(db.getGreatestId() - 1, (err, row) => {
+                                    assert.strictEqual(row.active, 0);
                                 });
                             })
                             .end(done)
                     });
             });
-            
+
             it('on PUT should update the task to active', (done) => {
                 request(app)
-                .post('/tasks')
-                .send({ text: "hello, world" })
-                .end(() => {
-                    request(app)
-                        .put(`/tasks/${db.getGreatestId() - 1}?active=true`)
-                        .expect(200)
-                        .expect(() => {
-                            db.getTask(db.getGreatestId() - 1, (err, row) => {
-                                assert.strictEqual(row.active, 1);  
-                            });
-                        })
-                        .end(done)
-                });
+                    .post('/tasks')
+                    .send({ text: "hello, world" })
+                    .end(() => {
+                        request(app)
+                            .put(`/tasks/${db.getGreatestId() - 1}?active=true`)
+                            .expect(200)
+                            .expect(() => {
+                                db.getTask(db.getGreatestId() - 1, (err, row) => {
+                                    assert.strictEqual(row.active, 1);
+                                });
+                            })
+                            .end(done)
+                    });
             });
 
 

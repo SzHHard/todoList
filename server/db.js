@@ -50,15 +50,7 @@ function getTask(id, done) {
  * @param {Callback} done 
  */
 
-//  let id = {id: -1};
 
-//  countRows( (err, row) => {
-//     console.log('rowcount: ' + row['COUNT(*)']);
-//     id.id = row['COUNT(*)'];
-// })
-// console.log('id.id: ' + id.id);
-// id = id.id || 1;
-// console.log('id: ' + id);
 
  let id = countRows( (err, row) => {return row['COUNT(*)']}) || 1; // как пофиксить асинхронность? 
 
@@ -68,22 +60,6 @@ function getTask(id, done) {
  })
 
  
-//let id = {id: 0};
-
-// const changeId = () =>  {
-//     id.id = 10;
-//     countRows( (err, row) => {
-//         console.log('row: ' + row['COUNT(*)']);
-//         id.id = row['COUNT(*)'];
-//         console.log('inner inner: ' + id.id);
-//     });
-//     console.log('inner ' +id);
-// }
-// changeId(); 
-// id = id.id;
-// console.log(id);
-
-
 
 
 function insertTask(task, done) {
@@ -121,5 +97,14 @@ function getGreatestId() {
     return id;
 }
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, getGreatestId }
+ function findIdByContentAndStatus(content, status, done) {
+    db.get('SELECT * FROM tasks WHERE active = $active AND content = $content', {
+        $active: status,
+        $content: content
+    }, done);
+}
+
+
+
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, getGreatestId, findIdByContentAndStatus }
 

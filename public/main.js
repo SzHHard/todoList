@@ -1,3 +1,4 @@
+
 const list = document.getElementById("todo-list");
 const input_list = document.getElementById("input-list");
 const howManyLeft = document.getElementById('how-many-left');
@@ -189,26 +190,12 @@ input_list.addEventListener("keydown", (event) => {
     }) .then( (res) => {
       console.log(res);
       return res.json();
-     // return res.text();
-    //  li1.id = res.id;
-    //  console.log(li1.id)
+    
     }) .then(data => {
-      console.log(data);
       li1.id = data.id;
-      console.log(li1.id);
-    }) 
+     }) 
 
-    ////////////////////
-
-    // let response = await fetch(urlForGetAllRequest, {
-    //   method: 'POST',
-    //   body: JSON.stringify({                          //зачем нужен json stringify?
-    //     text: li1.firstElementChild.innerHTML
-    //   }),
-    //   headers: {'Content-Type': 'application/json'} 
-    // })
-    //   let result = await response.json();
-    //   li1.id = result;
+ 
   }
 });
 
@@ -275,6 +262,13 @@ buttonClearCompleted.addEventListener('click', () => {
   Model.Cards._all = Model.Cards.all.filter(obj => {
     return (Model.Cards.completed.indexOf(obj) === -1);
   })
+  for(let i = 0; i < Model.Cards.completed.length; i++) {
+    console.log(Model.Cards.completed[i])
+    fetch(urlForGetAllRequest + '/' + Model.Cards.completed[i].id, {
+      method: 'DELETE'
+    })
+  }
+
   Model.Cards._completed = [];
 });
 

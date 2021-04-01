@@ -6,9 +6,17 @@ const db = require('./db');
 
 router.use(express.json())
 router.get('/tasks', (req, res) => {
+    console.log(req.query);
+    // if(!req.query.content) {
     db.getAllTasks((err, tasks) => {   //err 503
         res.send(tasks);
     });
+    //  } else {
+    //     db.findIdByContentAndStatus(req.query.content, req.query.active, (err, row) => {
+    //         console.log('row id:' + row.id);
+    //         res.send({id: row.id}).json();
+    //     })
+    // } 
 });
 
 router.post('/tasks', (req, res, next) => {
