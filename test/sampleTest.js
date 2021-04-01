@@ -75,7 +75,7 @@ describe('todoList api v1', function () {
                     .set('Accept', 'application.json')
                     .end(() => {
                         request(app)
-                            .get('/tasks/1')
+                            .get(`/tasks/${db.getGreatestId()-1}`)
                             .set('Accept', 'application/json')
                             .expect('Content-Type', /json/)
                             .expect(200)
@@ -99,7 +99,7 @@ describe('todoList api v1', function () {
                         });
 
                         request(app)
-                            .delete('/tasks/1')
+                            .delete(`/tasks/${db.getGreatestId() - 1}`)
                             .expect(204)
                             .end(() => {
                                 let newLength = -1;
@@ -108,6 +108,7 @@ describe('todoList api v1', function () {
                                         console.log(err);
                                     } else {
                                         newLength = row['COUNT(*)'];
+                                        console.log(newLength);
                                     }
                                 });
                                 request(app)
