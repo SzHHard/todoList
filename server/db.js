@@ -62,7 +62,10 @@ function getTask(id, done) {
 
  let id = countRows( (err, row) => {return row['COUNT(*)']}) || 1; // как пофиксить асинхронность? 
 
-
+ countRows( (err, row) => {
+     id = row['COUNT(*)'] + 1;
+     console.log('line 67: ' + id);
+ })
 
  
 //let id = {id: 0};
