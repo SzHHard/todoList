@@ -13,6 +13,10 @@ db.createTable(() => {
     app.listen(3000);
 })
 
+db.getAllTasks( (err,rows) => {
+    console.log(rows);
+})
+
 //db.clearTable(err => {if(err){console.log(err)}});
 
 // db.insertTask('test', (err) => {

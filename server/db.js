@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('../db.sqlite');
 
-
+let id = false;
 /**
  * Clears table of all tasks
  * @param {Callback} done 
@@ -17,6 +17,12 @@ function clearTable(done) {
 function createTable(done) {
     db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT, active INTEGER DEFAULT(1))', (err) => {
         if (err && err.message == "SQLITE_ERROR: table tasks already exists") {
+            id = 1; // как пофиксить асинхронность? 
+
+            countRows((err, row) => {
+                id = row['COUNT(*)'] + 1;
+                console.log('line 67: ' + id);
+            })
             done()
         } else {
 
@@ -52,14 +58,9 @@ function getTask(id, done) {
 
 
 
- let id = countRows( (err, row) => {return row['COUNT(*)']}) || 1; // как пофиксить асинхронность? 
 
- countRows( (err, row) => {
-     id = row['COUNT(*)'] + 1;
-     console.log('line 67: ' + id);
- })
 
- 
+
 
 
 function insertTask(task, done) {
@@ -97,7 +98,7 @@ function getGreatestId() {
     return id;
 }
 
- function findIdByContentAndStatus(content, status, done) {
+function findIdByContentAndStatus(content, status, done) {
     db.get('SELECT * FROM tasks WHERE active = $active AND content = $content', {
         $active: status,
         $content: content
