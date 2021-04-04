@@ -47,7 +47,6 @@ describe('todoList api v1', function () {
         // });
 
 
-
         it('on POST should create a task', (done) => {
             request(app)
                 .post('/tasks')
@@ -66,6 +65,39 @@ describe('todoList api v1', function () {
 
         });
 
+        it('on PUT with query passed should update task content', (done) => {
+            request(app)
+                .post('/tasks')
+                .send({ text: "before" })
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end((err, res) => {
+                    if (err) return done(err)
+                    let id = res.id;
+
+                    request(app)
+                        .put(`/tasks/${id}?content=after`)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .end((err) => {
+                            if (err) return done(err)
+                            request(app)
+                                .get(`/tasks/${id}`)
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .expect((res) => {
+                                    assert.strictEqual(res.content, 'after');
+                                })
+                                .end(done)
+                        })
+
+                })
+        })
+
+
         describe("/tasks/:id", function () {
 
             it('on GET should return the requested task', (done) => {
@@ -75,7 +107,7 @@ describe('todoList api v1', function () {
                     .set('Accept', 'application.json')
                     .end(() => {
                         request(app)
-                            .get(`/tasks/${db.getGreatestId()-1}`)
+                            .get(`/tasks/${db.getGreatestId() - 1}`)
                             .set('Accept', 'application/json')
                             .expect('Content-Type', /json/)
                             .expect(200)
