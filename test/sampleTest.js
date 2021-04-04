@@ -65,7 +65,7 @@ describe('todoList api v1', function () {
 
         });
 
-        it('on PUT with query passed should update task content', (done) => {
+        it.only('on PUT with query passed should update task content', (done) => {
             request(app)
                 .post('/tasks')
                 .send({ text: "before" })
@@ -74,25 +74,34 @@ describe('todoList api v1', function () {
                 .expect(201)
                 .end((err, res) => {
                     if (err) return done(err)
-                    let id = res.id;
+                    let id = -1;
 
-                    request(app)
-                        .put(`/tasks/${id}?content=after`)
-                        .set('Accept', 'application/json')
-                        .expect('Content-Type', /json/)
-                        .expect(200)
-                        .end((err) => {
-                            if (err) return done(err)
-                            request(app)
-                                .get(`/tasks/${id}`)
-                                .set('Accept', 'application/json')
-                                .expect('Content-Type', /json/)
-                                .expect(200)
-                                .expect((res) => {
-                                    assert.strictEqual(res.content, 'after');
-                                })
-                                .end(done)
-                        })
+                    db.getMaxIdFromTable((err, row) => {
+                        id = row['MAX(id)'];
+
+                        request(app)
+                            .put(`/tasks/${id}?content=after`)
+                            .set('Accept', 'application/json')
+                            //.expect('Content-Type', /json/)
+                            .expect(200)
+                            .end((err) => {
+                                // db.getAllTasks((err, rows) => {
+                                //     console.log(rows);
+                                // })
+                                if (err) return done(err)
+                                request(app)
+                                    .get(`/tasks/${id}`)
+                                    .set('Accept', 'application/json')
+                                    //  .expect('Content-Type', /json/)
+                                    .expect(200)
+                                    .expect((res) => {
+                                        JSON.stringify(res);
+                                        assert.strictEqual(res.body.content, 'after');
+                                    })
+                                    .end(done)
+                            })
+                    })
+
 
                 })
         })

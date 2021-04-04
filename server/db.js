@@ -17,12 +17,17 @@ function clearTable(done) {
 function createTable(done) {
     db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT, active INTEGER DEFAULT(1))', (err) => {
         if (err && err.message == "SQLITE_ERROR: table tasks already exists") {
-            id = 1; // как пофиксить асинхронность? 
+            id = 1; 
 
-            countRows((err, row) => {
-                id = row['COUNT(*)'] + 1;
+            // countRows((err, row) => {
+            //     id = row['COUNT(*)'] + 1;
+            //     console.log('line 67: ' + id);
+            // })
+            getMaxIdFromTable((err, row) => {
+                id = row['MAX(id)'] + 1;
                 console.log('line 67: ' + id);
             })
+
             done()
         } else {
 
@@ -57,7 +62,9 @@ function getTask(id, done) {
  */
 
 
-
+function getMaxIdFromTable(done) {
+    db.get('SELECT MAX(id) from tasks', done)
+}
 
 
 
@@ -94,6 +101,13 @@ function switchActive(active, id, done) {
     }, done);
 }
 
+function changeContent(content, id, done) {
+    db.run('UPDATE tasks SET content = $content WHERE id = $id', {
+        $content: content,
+        $id: id
+    }, done)
+}
+
 function getGreatestId() {
     return id;
 }
@@ -107,5 +121,5 @@ function findIdByContentAndStatus(content, status, done) {
 
 
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, getGreatestId, findIdByContentAndStatus }
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, getGreatestId, findIdByContentAndStatus, changeContent, getMaxIdFromTable}
 

@@ -74,6 +74,16 @@ router.delete('/tasks/:id', (req, res) => {
 });
 
 router.put('/tasks/:id', (req, res) => {
+    console.log('reqquerycontent= ' + req.query.content)
+    console.log('reqparamsid = ' + req.params.id)
+     if(req.query.content){
+        db.changeContent(req.query.content, req.params.id, (err) => {
+            if(err) {
+                console.log(err)
+            }
+            res.send();
+        })
+     }  else {
 
     //создать проверку на существование строки с выбранным id
     db.getTask(req.params.id, (err, row) => {
@@ -97,7 +107,7 @@ router.put('/tasks/:id', (req, res) => {
         } else
         res.status(400).send();
     })
-
+     }
 
 })
 
