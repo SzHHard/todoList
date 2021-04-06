@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 const list = document.getElementById("todo-list");
 const input_list = document.getElementById("input-list");
@@ -293,6 +294,8 @@ buttonClearCompleted.addEventListener('click', () => {
 });
 
 =======
+=======
+>>>>>>> e2bc8a94b265904272cb1876997d96750a9c817c
 
 var list = document.getElementById("todo-list");
 var input_list = document.getElementById("input-list");
@@ -552,5 +555,9 @@ buttonClearCompleted.addEventListener('click', function () {
   }
 
   Model.Cards._completed = [];
+<<<<<<< HEAD
 });
 >>>>>>> Setup React/Babel Compilation
+=======
+});
+>>>>>>> e2bc8a94b265904272cb1876997d96750a9c817c
