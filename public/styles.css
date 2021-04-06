@@ -2,7 +2,11 @@
 body{
     background: #f5f5f5; 
 }
-
+.edit{
+     /* background-color: pink;  */
+    outline: none;
+    border: none;
+}
 .bigbox{
     width: 410px;
     background: white;

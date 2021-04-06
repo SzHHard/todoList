@@ -39,6 +39,12 @@ sendRequest().then(data => {
     }
     li1.id = data[i].id;
     console.log(li1.id);
+    li1.firstChild.addEventListener('change', () => {
+      console.log('inputValue= ' + li1.firstChild.value);
+     fetch(urlForGetAllRequest + '/' + li1.id + '?content=' + li1.firstChild.value, {
+       method: 'PUT',
+     })
+ })
   }
 }).catch(err => console.log(err));
 
@@ -87,8 +93,14 @@ const View = {
     input_list.value = '';
     let li1 = document.createElement('li');
     list.appendChild(li1);
-    li1.innerHTML = `<p>${inp}<p>`;
-
+    let innerInput = document.createElement('input')
+    innerInput.className = "edit";
+    innerInput.type = "text"
+    innerInput.value = inp;
+    li1.appendChild(innerInput);
+    
+   
+    //li1.innerHTML = `<input class="edit" type="text" value="${inp}">` //${inp}<p>`; 
     return li1;
   }
 }
@@ -96,6 +108,7 @@ const View = {
 const Controller = {
   createNewListItem(taskText) {
     const li1 = View.renderNewListItem(taskText);
+    
     Model.pushNewActiveTask(li1);
     return li1;
   },
@@ -184,7 +197,7 @@ input_list.addEventListener("keydown", (event) => {
     fetch(urlForGetAllRequest, {
       method: 'POST',
       body: JSON.stringify({                          //зачем нужен json stringify?
-        text: li1.firstElementChild.innerHTML
+        text: li1.firstElementChild.value
       }),
       headers: {'Content-Type': 'application/json'} 
     }) .then( (res) => {
@@ -195,8 +208,14 @@ input_list.addEventListener("keydown", (event) => {
       li1.id = data.id;
      }) 
 
+     li1.firstChild.addEventListener('change', () => {
+       console.log('inputValue= ' + li1.firstChild.value);
+      fetch(urlForGetAllRequest + '/' + li1.id + '?content=' + li1.firstChild.value, {
+        method: 'PUT',
+      })
+  })
  
-  }
+}
 });
 
 const buttonAll = document.createElement('button');

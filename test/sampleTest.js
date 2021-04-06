@@ -65,7 +65,7 @@ describe('todoList api v1', function () {
 
         });
 
-        it.only('on PUT with query passed should update task content', (done) => {
+        it('on PUT with query passed should update task content', (done) => {
             request(app)
                 .post('/tasks')
                 .send({ text: "before" })

@@ -82,6 +82,11 @@ router.put('/tasks/:id', (req, res) => {
             if(err) {
                 console.log(err)
             }
+            // console.log('logging table after PUT changing content: '); // отладка 
+            // db.getAllTasks( (err,rows) => {
+            //     console.log(rows);
+            // })
+
             res.send();
         })
      }  else {
