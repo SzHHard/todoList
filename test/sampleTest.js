@@ -59,6 +59,7 @@ describe('todoList api v1', function () {
                         .get('/tasks')
                         .expect((res) => {
                             assert.strictEqual(res.body[0].content, "hello, world")
+                            assert.strictEqual(res.body[0].id, 1)
                         })
                         .end(done)
                 })

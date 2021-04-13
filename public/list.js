@@ -45,19 +45,19 @@ export var Task = function (_React$Component) {
             return React.createElement(
                 "li",
                 { className: "task" },
-                React.createElement("input", { onChange: this.onCheck, checked: this.props.completed, type: "checkbox" }),
+                React.createElement("input", { onChange: this.onCheck, checked: this.props.completed, type: "checkbox", className: "checkbx" }),
                 React.createElement("input", { onChange: this.onChange, type: "text", value: this.props.text }),
-                React.createElement(
-                    "button",
-                    { onClick: this.onDelete, className: "task-delete" },
-                    "\u2A2F"
-                )
+                React.createElement("button", { onClick: this.onDelete, className: "del-but" })
             );
         }
     }]);
 
     return Task;
 }(React.Component);
+
+var server = 'http://localhost:3000/api';
+var urlForGetAllRequest = server + '/tasks';
+
 export var List = function (_React$Component2) {
     _inherits(List, _React$Component2);
 
@@ -66,21 +66,48 @@ export var List = function (_React$Component2) {
 
         var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
 
-        _this2.state = { tasks: [] };
+        _this2.state = { tasks: [], filter: List.FILTER.ALL };
         _this2.handleEnter = _this2.handleEnter.bind(_this2);
         _this2.handleChange = _this2.handleChange.bind(_this2);
         _this2.handleDelete = _this2.handleDelete.bind(_this2);
         _this2.handleCheck = _this2.handleCheck.bind(_this2);
+        _this2.handleClearCompleted = _this2.handleClearCompleted.bind(_this2);
         return _this2;
     }
 
     _createClass(List, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this3 = this;
+
+            fetch(urlForGetAllRequest).then(function (res) {
+                if (!res.ok) throw "Server Not Available";
+                return res.json();
+            }).then(function (tasks) {
+                return tasks.map(function (task) {
+                    return { text: task.content, completed: task.active == 0, id: task.id };
+                });
+            }).then(function (tasks) {
+                _this3.setState({ tasks: tasks });
+            });
+        }
+    }, {
         key: "handleEnter",
         value: function handleEnter(event) {
+            var _this4 = this;
+
             if (event.key === 'Enter') {
-                var newval = { text: event.target.value, completed: false };
-                this.setState({
-                    tasks: [].concat(_toConsumableArray(this.state.tasks), [newval])
+                var text = event.target.value;
+
+                fetch(urlForGetAllRequest, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                }).then(function (res) {
+                    var newval = { text: text, completed: false, id: res.id };
+                    _this4.setState({
+                        tasks: [].concat(_toConsumableArray(_this4.state.tasks), [newval])
+                    });
                 });
 
                 event.target.value = '';
@@ -114,22 +141,91 @@ export var List = function (_React$Component2) {
             });
         }
     }, {
+        key: "handleFilter",
+        value: function handleFilter(type) {
+            this.setState({ filter: type });
+        }
+    }, {
+        key: "handleClearCompleted",
+        value: function handleClearCompleted() {
+            var tasks = this.state.tasks.filter(function (task) {
+                return !task.completed;
+            });
+            this.setState({ tasks: tasks });
+        }
+    }, {
         key: "render",
         value: function render() {
-            var _this3 = this;
+            var _this5 = this;
 
+            var currentTasks = this.state.tasks.map(function (task, index) {
+                return { task: task, index: index };
+            }).filter(function (_ref) {
+                var task = _ref.task;
+
+                switch (_this5.state.filter) {
+                    case List.FILTER.ACTIVE:
+                        return !task.completed;
+                    case List.FILTER.COMPLETED:
+                        return task.completed;
+                    default:
+                        return true;
+                }
+            });
+
+            var tasksLeft = this.state.tasks.filter(function (task) {
+                return !task.completed;
+            }).length;
             return React.createElement(
                 "div",
-                { id: "todo-list" },
+                { className: "bigbox", id: "todo-list" },
                 React.createElement("input", { onKeyPress: this.handleEnter, type: "text", className: "label", id: "input-list", placeholder: "What needs to be done?" }),
                 React.createElement(
                     "ul",
                     null,
-                    this.state.tasks.map(function (_ref, index) {
-                        var text = _ref.text,
-                            completed = _ref.completed;
-                        return React.createElement(Task, { handleCheck: _this3.handleCheck, handleDelete: _this3.handleDelete, key: index, id: index, completed: completed, text: text, handleChange: _this3.handleChange });
+                    currentTasks.map(function (_ref2) {
+                        var _ref2$task = _ref2.task,
+                            text = _ref2$task.text,
+                            completed = _ref2$task.completed,
+                            index = _ref2.index;
+                        return React.createElement(Task, { handleCheck: _this5.handleCheck, handleDelete: _this5.handleDelete, key: index, id: index, completed: completed, text: text, handleChange: _this5.handleChange });
                     })
+                ),
+                React.createElement(
+                    "div",
+                    { className: "table-footer" },
+                    React.createElement(
+                        "p",
+                        { style: { display: 'inline' } },
+                        tasksLeft,
+                        " items left"
+                    ),
+                    React.createElement(
+                        "button",
+                        { className: this.state.filter === List.FILTER.ALL ? 'btnclicked' : null, onClick: function onClick() {
+                                return _this5.handleFilter(List.FILTER.ALL);
+                            } },
+                        "All"
+                    ),
+                    React.createElement(
+                        "button",
+                        { className: this.state.filter === List.FILTER.ACTIVE ? 'btnclicked' : null, onClick: function onClick() {
+                                return _this5.handleFilter(List.FILTER.ACTIVE);
+                            } },
+                        "Active"
+                    ),
+                    React.createElement(
+                        "button",
+                        { className: this.state.filter === List.FILTER.COMPLETED ? 'btnclicked' : null, onClick: function onClick() {
+                                return _this5.handleFilter(List.FILTER.COMPLETED);
+                            } },
+                        "Completed"
+                    ),
+                    React.createElement(
+                        "button",
+                        { className: "clear-compl", onClick: this.handleClearCompleted },
+                        "Clear Completed"
+                    )
                 )
             );
         }
@@ -137,3 +233,4 @@ export var List = function (_React$Component2) {
 
     return List;
 }(React.Component);
+List.FILTER = { ALL: 'All', ACTIVE: 'Active', COMPLETED: 'Completed' };
