@@ -15,7 +15,7 @@ function clearTable(done) {
  * @param {Callback} done 
  */
 function createTable(done) {
-    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT, active INTEGER DEFAULT(1))', (err) => {
+    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, order INTEGER, content TEXT, active INTEGER DEFAULT(1))', (err) => {
         if (err && err.message == "SQLITE_ERROR: table tasks already exists") {
             id = 1; 
 

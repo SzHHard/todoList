@@ -70,6 +70,8 @@ export class List extends React.Component {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: text })
             }).then(res => {
+                return res.json()
+            }).then(res => {
                 let newval = { text: text, completed: false, id: res.id }
                 this.setState({
                     tasks: [
@@ -78,11 +80,15 @@ export class List extends React.Component {
                     ]
                 })
             })
-
+            
             event.target.value = '';
         }
     }
     handleDelete(key) {
+        const dbId = this.state.tasks[key].id;
+        fetch(urlForGetAllRequest + '/' + dbId, {
+            method: 'DELETE'
+        })
         const new_tasks = [...this.state.tasks]
         new_tasks.splice(key, 1);
         this.setState({
@@ -91,6 +97,10 @@ export class List extends React.Component {
     }
 
     handleChange(key, e) {
+        const dbId = this.state.tasks[key].id;
+        fetch(urlForGetAllRequest + '/' + dbId + '?content=' + e.target.value, {
+            method: 'PUT'
+        })
         const new_tasks = [...this.state.tasks]
         new_tasks[key].text = e.target.value
         this.setState({
@@ -101,8 +111,13 @@ export class List extends React.Component {
     handleCheck(key) {
         const new_tasks = [...this.state.tasks]
         new_tasks[key].completed = !new_tasks[key].completed
+        console.log(new_tasks[key])
         this.setState({
             tasks: new_tasks
+        })
+        const dbId = new_tasks[key].id; // почему undefined без обновления страницы?
+        fetch(urlForGetAllRequest + '/' + dbId + '?active=' + !new_tasks[key].completed, {
+            method: 'PUT'
         })
     }
 

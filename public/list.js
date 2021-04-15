@@ -104,6 +104,8 @@ export var List = function (_React$Component2) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text: text })
                 }).then(function (res) {
+                    return res.json();
+                }).then(function (res) {
                     var newval = { text: text, completed: false, id: res.id };
                     _this4.setState({
                         tasks: [].concat(_toConsumableArray(_this4.state.tasks), [newval])
@@ -116,6 +118,10 @@ export var List = function (_React$Component2) {
     }, {
         key: "handleDelete",
         value: function handleDelete(key) {
+            var dbId = this.state.tasks[key].id;
+            fetch(urlForGetAllRequest + '/' + dbId, {
+                method: 'DELETE'
+            });
             var new_tasks = [].concat(_toConsumableArray(this.state.tasks));
             new_tasks.splice(key, 1);
             this.setState({
@@ -125,6 +131,10 @@ export var List = function (_React$Component2) {
     }, {
         key: "handleChange",
         value: function handleChange(key, e) {
+            var dbId = this.state.tasks[key].id;
+            fetch(urlForGetAllRequest + '/' + dbId + '?content=' + e.target.value, {
+                method: 'PUT'
+            });
             var new_tasks = [].concat(_toConsumableArray(this.state.tasks));
             new_tasks[key].text = e.target.value;
             this.setState({
@@ -136,8 +146,13 @@ export var List = function (_React$Component2) {
         value: function handleCheck(key) {
             var new_tasks = [].concat(_toConsumableArray(this.state.tasks));
             new_tasks[key].completed = !new_tasks[key].completed;
+            console.log(new_tasks[key]);
             this.setState({
                 tasks: new_tasks
+            });
+            var dbId = new_tasks[key].id; // почему undefined без обновления страницы?
+            fetch(urlForGetAllRequest + '/' + dbId + '?active=' + !new_tasks[key].completed, {
+                method: 'PUT'
             });
         }
     }, {
