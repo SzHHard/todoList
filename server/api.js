@@ -6,7 +6,6 @@ const db = require('./db');
 
 router.use(express.json())
 router.get('/tasks', (req, res) => {
-    console.log(req.query);
 
     db.getAllTasks((err, tasks) => {
         res.send(tasks);
@@ -19,7 +18,11 @@ router.post('/tasks', (req, res, next) => {
     if (newElement) {
         db.insertTask(newElement.text, (err) => {
             let id = 0;
-            db.getTask(db.getGreatestId() - 1, (err, row) => {
+
+            let maxId = -1;
+            db.getMaxIdFromTable((err, row) => {
+               maxId = row['MAX(id)'];
+               db.getTask(maxId, (err, row) => {
                 if (err) {
 
                 } else {
@@ -29,7 +32,11 @@ router.post('/tasks', (req, res, next) => {
                     res.status(201).send({ id: id });
                 }
             });
+            })
 
+           
+
+      
             //.json();
         });
 

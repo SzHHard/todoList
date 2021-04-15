@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('../db.sqlite');
 
-let id = false;
+//let id = false;
 /**
  * Clears table of all tasks
  * @param {Callback} done 
@@ -15,18 +15,13 @@ function clearTable(done) {
  * @param {Callback} done 
  */
 function createTable(done) {
-    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, order INTEGER, content TEXT, active INTEGER DEFAULT(1))', (err) => {
+    db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT, active INTEGER DEFAULT(1))', (err) => {
         if (err && err.message == "SQLITE_ERROR: table tasks already exists") {
-            id = 1; 
+            // id = 1; 
 
-            // countRows((err, row) => {
-            //     id = row['COUNT(*)'] + 1;
-            //     console.log('line 67: ' + id);
+            // getMaxIdFromTable((err, row) => {
+            //     id = row['MAX(id)'] + 1;
             // })
-            getMaxIdFromTable((err, row) => {
-                id = row['MAX(id)'] + 1;
-                console.log('line 67: ' + id);
-            })
 
             done()
         } else {
@@ -71,7 +66,8 @@ function getMaxIdFromTable(done) {
 
 
 function insertTask(task, done) {
-    db.run("INSERT INTO tasks (id, content) VALUES ($id, $task)", { $id: id++, $task: task }, done);
+    db.run("INSERT INTO tasks (content) VALUES ($task)", { $task: task }, done);
+  //  db.run("INSERT INTO tasks (id, content) VALUES ($id, $task)", { $id: id++, $task: task }, done);
 }
 
 /**
@@ -108,9 +104,15 @@ function changeContent(content, id, done) {
     }, done)
 }
 
-function getGreatestId() {
-    return id;
-}
+// function getGreatestId() {
+//     return id;
+// }
+
+// function getGreatestId() {                  // попытка изменить систему id. При неудаче раскомментировать функцию выше
+//     getMaxIdFromTable((row, err) => {
+//         return row['MAX(id)'];
+//     })
+// }
 
 function findIdByContentAndStatus(content, status, done) {
     db.get('SELECT * FROM tasks WHERE active = $active AND content = $content', {
@@ -121,5 +123,5 @@ function findIdByContentAndStatus(content, status, done) {
 
 
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, getGreatestId, findIdByContentAndStatus, changeContent, getMaxIdFromTable}
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, findIdByContentAndStatus, changeContent, getMaxIdFromTable}
 
