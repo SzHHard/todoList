@@ -46,7 +46,7 @@ export var Task = function (_React$Component) {
                 "li",
                 { className: "task" },
                 React.createElement("input", { onChange: this.onCheck, checked: this.props.completed, type: "checkbox", className: "checkbx" }),
-                React.createElement("input", { onChange: this.onChange, type: "text", value: this.props.text }),
+                React.createElement("input", { className: "inner-input", onChange: this.onChange, type: "text", value: this.props.text }),
                 React.createElement("button", { onClick: this.onDelete, className: "del-but" })
             );
         }
@@ -194,10 +194,14 @@ export var List = function (_React$Component2) {
             return React.createElement(
                 "div",
                 { className: "bigbox", id: "todo-list" },
-                React.createElement("input", { onKeyPress: this.handleEnter, type: "text", className: "label", id: "input-list", placeholder: "What needs to be done?" }),
                 React.createElement(
                     "ul",
                     null,
+                    React.createElement(
+                        "li",
+                        null,
+                        React.createElement("input", { onKeyPress: this.handleEnter, type: "text", className: "label", id: "input-list", placeholder: "What needs to be done?" })
+                    ),
                     currentTasks.map(function (_ref2) {
                         var _ref2$task = _ref2.task,
                             text = _ref2$task.text,
@@ -211,7 +215,7 @@ export var List = function (_React$Component2) {
                     { className: "table-footer" },
                     React.createElement(
                         "p",
-                        { style: { display: 'inline' } },
+                        { style: { display: 'inline', marginRight: 25 } },
                         tasksLeft,
                         " items left"
                     ),

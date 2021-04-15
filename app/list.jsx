@@ -25,7 +25,7 @@ export class Task extends React.Component {
         return (
             <li className="task">
                 <input onChange={this.onCheck} checked={this.props.completed} type="checkbox" className='checkbx' />
-                <input onChange={this.onChange} type="text" value={this.props.text} />
+                <input className='inner-input' onChange={this.onChange} type="text" value={this.props.text} />
                 <button onClick={this.onDelete} className="del-but"></button>
             </li>
         )
@@ -80,7 +80,7 @@ export class List extends React.Component {
                     ]
                 })
             })
-            
+
             event.target.value = '';
         }
     }
@@ -143,12 +143,14 @@ export class List extends React.Component {
         let tasksLeft = this.state.tasks.filter((task) => !task.completed).length;
         return (
             <div className='bigbox' id="todo-list">
-                <input onKeyPress={this.handleEnter} type="text" className="label" id="input-list" placeholder="What needs to be done?" />
                 <ul>
+                    <li>
+                        <input onKeyPress={this.handleEnter} type="text" className="label" id="input-list" placeholder="What needs to be done?" />
+                    </li>
                     {currentTasks.map(({ task: { text, completed }, index }) => <Task handleCheck={this.handleCheck} handleDelete={this.handleDelete} key={index} id={index} completed={completed} text={text} handleChange={this.handleChange} />)}
                 </ul>
                 <div className="table-footer">
-                    <p style={{ display: 'inline' }}>{tasksLeft} items left</p>
+                    <p style={{ display: 'inline', marginRight: 25 }}>{tasksLeft} items left</p>
                     <button className={this.state.filter === List.FILTER.ALL ? 'btnclicked' : null} onClick={() => this.handleFilter(List.FILTER.ALL)}>All</button>
                     <button className={this.state.filter === List.FILTER.ACTIVE ? 'btnclicked' : null} onClick={() => this.handleFilter(List.FILTER.ACTIVE)}>Active</button>
                     <button className={this.state.filter === List.FILTER.COMPLETED ? 'btnclicked' : null} onClick={() => this.handleFilter(List.FILTER.COMPLETED)}>Completed</button>
