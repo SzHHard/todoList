@@ -9,17 +9,15 @@ const routerApi = require('../server/api');
 app.use('/', routerApi);
 
 describe('todoList api v1', function () {
-    before((done) => {
-        db.clearTable(() => {
-            db.createTable(done)
-        })
-    })
+    // before((done) => {
+    //     db.sequelize.sync().then(done)
+    // })
 
     describe('/tasks', function () {
 
         it('on GET should return tasks', function (done) {
             request(app)
-                .get('/tasks')
+                .get('/')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -28,14 +26,14 @@ describe('todoList api v1', function () {
 
         it('on POST should create a task', (done) => {
             request(app)
-                .post('/tasks')
+                .post('/')
                 .send({ text: "hello, world" })
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(201)
                 .end(() => {
                     request(app)
-                        .get('/tasks')
+                        .get('/')
                         .expect((res) => {
                             assert.strictEqual(res.body[0].content, "hello, world")
                             assert.strictEqual(res.body[0].id, 1)
@@ -47,7 +45,7 @@ describe('todoList api v1', function () {
 
         it('on PUT with query passed should update task content', (done) => {
             request(app)
-                .post('/tasks')
+                .post('/')
                 .send({ text: "before" })
                 .set('Accept', 'application/json')
                 .expect('Content-Type', /json/)
@@ -59,13 +57,13 @@ describe('todoList api v1', function () {
                     db.getMaxIdFromTable((err, row) => {
                         id = row['MAX(id)'];
                         request(app)
-                            .put(`/tasks/${id}?content=after`)
+                            .put(`/${id}?content=after`)
                             .set('Accept', 'application/json')
                             .expect(200)
                             .end((err) => {
                                 if (err) return done(err)
                                 request(app)
-                                    .get(`/tasks/${id}`)
+                                    .get(`/${id}`)
                                     .set('Accept', 'application/json')
                                     .expect(200)
                                     .expect((res) => {
@@ -83,7 +81,7 @@ describe('todoList api v1', function () {
     describe("/tasks/:id", function () {
         it('on GET should return the requested task', (done) => {
             request(app)
-                .post('/tasks')
+                .post('/')
                 .send({ text: "hello, world" })
                 .set('Accept', 'application.json')
                 .end(() => {
@@ -93,7 +91,7 @@ describe('todoList api v1', function () {
                         id = row['MAX(id)'];
 
                         request(app)
-                            .get(`/tasks/${id}`)
+                            .get(`/${id}`)
                             .set('Accept', 'application/json')
                             .expect('Content-Type', /json/)
                             .expect(200)
@@ -104,7 +102,7 @@ describe('todoList api v1', function () {
 
         it('on DELETE should remove a task', (done) => {
             request(app)
-                .post('/tasks')
+                .post('/')
                 .send({ text: "DELETE test" })
                 .end(() => {
                     db.countRows((err, row) => {
@@ -112,13 +110,13 @@ describe('todoList api v1', function () {
                         db.getMaxIdFromTable((err, row) => {
                             let id = row['MAX(id)'];
                             request(app)
-                                .delete(`/tasks/${id}`)
+                                .delete(`/${id}`)
                                 .expect(204)
                                 .end(() => {
                                     db.countRows((err, row) => {
                                         let newLength = row['COUNT(*)'];
                                         request(app)
-                                            .get('/tasks')
+                                            .get('/')
                                             .expect(200)
                                             .expect((res) => {
                                                 assert.strictEqual(newLength + 1, lengthAfterAdd);
@@ -133,13 +131,13 @@ describe('todoList api v1', function () {
         })
         it('on PUT should update the task to completed', (done) => {
             request(app)
-                .post('/tasks')
+                .post('/')
                 .send({ text: "putTest" })
                 .end(() => {
                     db.getMaxIdFromTable((err, row) => {
                         let id = row['MAX(id)'];
                         request(app)
-                            .put(`/tasks/${id}?active=false`)
+                            .put(`/${id}?active=false`)
                             .expect(200)
                             .expect(() => {
                                 db.getTask(id, (err, row) => {
@@ -153,13 +151,13 @@ describe('todoList api v1', function () {
 
         it('on PUT should update the task to active', (done) => {
             request(app)
-                .post('/tasks')
+                .post('/')
                 .send({ text: "hello, world" })
                 .end(() => {
                     db.getMaxIdFromTable((err, row) => {
                         let id = row['MAX(id)'];
                         request(app)
-                            .put(`/tasks/${id}?active=true`)
+                            .put(`/${id}?active=true`)
                             .expect(200)
                             .expect(() => {
                                 db.getTask(id, (err, row) => {
@@ -175,19 +173,19 @@ describe('todoList api v1', function () {
 
         it('on GET should fail if passed an invalid task id', (done) => {
             request(app)
-                .get('/tasks/1999922949')
+                .get('/1999922949')
                 .expect(400)
                 .end(done)
         })
         it('on DELETE should return 400 if invalid task id', (done) => {
             request(app)
-                .delete('/tasks/1938427')
+                .delete('/1938427')
                 .expect(400)
                 .end(done)
         })
         it('on PUT should return 400 if invalid task id', (done) => {
             request(app)
-                .put('/tasks/1938427?completed=true')
+                .put('/1938427?completed=true')
                 .expect(400)
                 .end(done)
         })

@@ -2,116 +2,27 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db');
 
-
+const tasks = require('./controllers/task.controller.js');
 
 router.use(express.json())
-router.get('/tasks', (req, res) => {
 
-    db.getAllTasks((err, tasks) => {
-        res.send(tasks);
-    });
+router.post("/", tasks.create)
+// Retrieve all Tasks
+router.get("/", tasks.findAll);
 
-});
+// Retrieve all published tasks
+router.get("/published", tasks.findAllPublished);
 
-router.post('/tasks', (req, res, next) => {
-    const newElement = { text: req.body.text };
-    if (newElement) {
-        db.insertTask(newElement.text, (err) => {
-            let id = 0;
+// Retrieve a single Task with id
+router.get("/:id", tasks.findOne);
 
-            let maxId = -1;
-            db.getMaxIdFromTable((err, row) => {
-               maxId = row['MAX(id)'];
-               db.getTask(maxId, (err, row) => {
-                if (err) {
+// Update a Task with id
+router.put("/:id", tasks.update);
 
-                } else {
+// Delete a Task with id
+router.delete("/:id", tasks.delete);
 
-                    id = row.id;
-
-                    res.status(201).send({ id: id });
-                }
-            });
-            })
-
-           
-
-      
-            //.json();
-        });
-
-    } else {
-        res.status(400).send();
-    }
-});
-
-router.get('/tasks/:id', (req, res) => {
-
-    db.getTask(req.params.id, (err, row) => {
-        if (row) {
-            res.send(row);
-        } else {
-
-            res.status(400).send();
-        }
-    });
-
-});
-
-router.delete('/tasks/:id', (req, res) => {
-
-    db.getTask(req.params.id, (error, row) => {
-        if (row) {
-            db.deleteTask(req.params.id, (err) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.status(204).send();
-                }
-            })
-        } else {
-            res.status(400).send();
-        }
-    });
-});
-
-router.put('/tasks/:id', (req, res) => {
-
-
-    if (req.query.content) {
-        db.changeContent(req.query.content, req.params.id, (err) => {
-            if (err) {
-                console.log(err)
-            }
-
-
-            res.send();
-        })
-    } else {
-        db.getTask(req.params.id, (err, row) => {
-            if (row) {
-                let state = req.query.active;
-
-                switch (state) {
-                    case 'true':
-                        state = 1;
-                        break;
-                    case 'false':
-                        state = 0;
-                        break;
-                    default: return res.status(400).send();
-                }
-                db.switchActive(state, req.params.id, (err) => {
-
-                    res.send();
-
-                });
-            } else
-                res.status(400).send();
-        })
-    }
-
-})
-
+// Delete all tasks
+router.delete("/", tasks.deleteAll);
 
 module.exports = router;

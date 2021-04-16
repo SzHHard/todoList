@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/index.js",
+  "module": "true",
   "scripts": {
     "start": "node server/index.js",
     "dev": "export NODE_ENV='production' && babel --watch app --out-dir public --presets react-app/prod & node server/index.js",

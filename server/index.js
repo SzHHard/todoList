@@ -5,14 +5,14 @@ const db = require('./db');
 const cors = require('cors');
 
 app.use(cors());
-app.use('/api', routerApi);
+
+app.use('/api/tasks', routerApi);
+
 app.use('/', express.static('public'));
 
-db.createTable(() => {
-    console.log("Start Listening at Port 3000");
-    app.listen(3000);
-})
-
+db.sequelize.sync();
+console.log("Start Listening at Port 3000");
+app.listen(3000);
 
 
 
