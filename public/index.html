@@ -3,22 +3,13 @@
 <html>
     <head>
         <link href = "styles.css" type = "text/css" rel = "stylesheet">
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     </head>
 
     <body>
-        <h1>todos</h1>
-       <div class = bigbox>
-            <ul id = "todo-list">
-              <li><input type="text" class="label" id="input-list" placeholder="What needs to be done?"> </li>
-            </ul>
-            <div id = "table-footer" class = "table-footer"> 
-                <p style="display: inline;" id="how-many-left">0</p>
-                <p style = "display: inline;">items left</p>
-                
-                
-             </div>
-        </div>
-        <script src="main.js"> </script>
+        <div id="app"></div>
+        <script src="App.js" type="module"></script>
     </body>
 
 </html>
