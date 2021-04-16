@@ -1,6 +1,10 @@
+const { Sequelize } = require('sequelize');
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database('../db.sqlite');
 
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './db.sqlite'
+  });
 
 /**
  * Clears table of all tasks
@@ -17,7 +21,7 @@ function clearTable(done) {
 function createTable(done) {
     db.run('CREATE TABLE tasks (id INTEGER PRIMARY KEY, content TEXT, active INTEGER DEFAULT(1))', (err) => {
         if (err && err.message == "SQLITE_ERROR: table tasks already exists") {
-   
+
             done()
         } else {
 
@@ -107,5 +111,5 @@ function findIdByContentAndStatus(content, status, done) {
 
 
 
-module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, findIdByContentAndStatus, changeContent, getMaxIdFromTable}
+module.exports = { createTable, insertTask, deleteTask, getTask, getAllTasks, clearTable, countRows, switchActive, db, findIdByContentAndStatus, changeContent, getMaxIdFromTable }
 

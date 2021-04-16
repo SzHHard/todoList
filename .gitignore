@@ -1,1 +1,8 @@
+# NODE
 node_modules
+
+# SQL
+*.sqlite
+
+# LOGS
+*.log
