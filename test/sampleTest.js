@@ -58,27 +58,24 @@ describe('todoList api v1', function () {
 
                     db.getMaxIdFromTable((err, row) => {
                         id = row['MAX(id)'];
-                    request(app)
-                        .put(`/tasks/${id}?content=after`)
-                        .set('Accept', 'application/json')
-                        .expect(200)
-                        .end((err) => {
-                            // db.getAllTasks( (err,rows) => {
-                            //     console.log(rows);
-                            // })
-                            if (err) return done(err)
-                            request(app)
-                                .get(`/tasks/${id}`)
-                                .set('Accept', 'application/json')
-                                .expect(200)
-                                .expect((res) => {
-                                    JSON.stringify(res);
-                                    assert.strictEqual(res.body.content, 'after');
-                                })
-                                .end(done)
-                        })
+                        request(app)
+                            .put(`/tasks/${id}?content=after`)
+                            .set('Accept', 'application/json')
+                            .expect(200)
+                            .end((err) => {
+                                if (err) return done(err)
+                                request(app)
+                                    .get(`/tasks/${id}`)
+                                    .set('Accept', 'application/json')
+                                    .expect(200)
+                                    .expect((res) => {
+                                        JSON.stringify(res);
+                                        assert.strictEqual(res.body.content, 'after');
+                                    })
+                                    .end(done)
+                            })
+                    })
                 })
-            })
 
         })
     })
@@ -94,15 +91,15 @@ describe('todoList api v1', function () {
 
                     db.getMaxIdFromTable((err, row) => {
                         id = row['MAX(id)'];
-                    
-                    request(app)
-                        .get(`/tasks/${id}`)
-                        .set('Accept', 'application/json')
-                        .expect('Content-Type', /json/)
-                        .expect(200)
-                        .end(done)
+
+                        request(app)
+                            .get(`/tasks/${id}`)
+                            .set('Accept', 'application/json')
+                            .expect('Content-Type', /json/)
+                            .expect(200)
+                            .end(done)
+                    })
                 })
-            })
         })
 
         it('on DELETE should remove a task', (done) => {
@@ -110,42 +107,27 @@ describe('todoList api v1', function () {
                 .post('/tasks')
                 .send({ text: "DELETE test" })
                 .end(() => {
-                    let lengthAfterAdd = -1;
                     db.countRows((err, row) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-
-                            lengthAfterAdd = row['COUNT(*)'];
-                        }
-                    });
-                    let id = -1;
-
-                    db.getMaxIdFromTable((err, row) => {
-                        id = row['MAX(id)'];
-                
-                    request(app)
-                        .delete(`/tasks/${id}`)
-                        .expect(204)
-                        .end(() => {
-                            let newLength = -1;
-                            db.countRows((err, row) => {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    newLength = row['COUNT(*)'];
-                                    console.log(newLength);
-                                }
-                            });
+                        let lengthAfterAdd = row['COUNT(*)'];
+                        db.getMaxIdFromTable((err, row) => {
+                            let id = row['MAX(id)'];
                             request(app)
-                                .get('/tasks')
-                                .expect(200)
-                                .expect((res) => {
-                                    assert.strictEqual(newLength + 1, lengthAfterAdd);
+                                .delete(`/tasks/${id}`)
+                                .expect(204)
+                                .end(() => {
+                                    db.countRows((err, row) => {
+                                        let newLength = row['COUNT(*)'];
+                                        request(app)
+                                            .get('/tasks')
+                                            .expect(200)
+                                            .expect((res) => {
+                                                assert.strictEqual(newLength + 1, lengthAfterAdd);
+                                            })
+                                            .end(done)
+                                    });
                                 })
-                                .end(done)
                         })
-                    })
+                    });
 
                 })
         })
@@ -154,21 +136,19 @@ describe('todoList api v1', function () {
                 .post('/tasks')
                 .send({ text: "putTest" })
                 .end(() => {
-                    let id = -1;
-
                     db.getMaxIdFromTable((err, row) => {
-                        id = row['MAX(id)'];
-                    request(app)
-                        .put(`/tasks/${id}?active=false`)
-                        .expect(200)
-                        .expect(() => {
-                            db.getTask(id, (err, row) => {
-                                assert.strictEqual(row.active, 0);
-                            });
-                        })
-                        .end(done)
-                });
-            }) 
+                        let id = row['MAX(id)'];
+                        request(app)
+                            .put(`/tasks/${id}?active=false`)
+                            .expect(200)
+                            .expect(() => {
+                                db.getTask(id, (err, row) => {
+                                    assert.strictEqual(row.active, 0);
+                                });
+                            })
+                            .end(done)
+                    });
+                })
         });
 
         it('on PUT should update the task to active', (done) => {
@@ -176,22 +156,19 @@ describe('todoList api v1', function () {
                 .post('/tasks')
                 .send({ text: "hello, world" })
                 .end(() => {
-                    let id = -1;
-
                     db.getMaxIdFromTable((err, row) => {
-                        id = row['MAX(id)'];
-
-                    request(app)
-                        .put(`/tasks/${id}?active=true`)
-                        .expect(200)
-                        .expect(() => {
-                            db.getTask(id, (err, row) => {
-                                assert.strictEqual(row.active, 1);
-                            });
-                        })
-                        .end(done)
-                });
-            })
+                        let id = row['MAX(id)'];
+                        request(app)
+                            .put(`/tasks/${id}?active=true`)
+                            .expect(200)
+                            .expect(() => {
+                                db.getTask(id, (err, row) => {
+                                    assert.strictEqual(row.active, 1);
+                                });
+                            })
+                            .end(done)
+                    });
+                })
         });
 
 
@@ -217,5 +194,3 @@ describe('todoList api v1', function () {
     })
 });
 
-
-// });

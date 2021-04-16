@@ -8,7 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import { LikeButton } from './likeButton.js';
 import { List } from './list.js';
 
 var e = React.createElement;
@@ -38,8 +37,7 @@ var App = function (_React$Component) {
                     null,
                     ' Todos '
                 ),
-                React.createElement(List, null),
-                React.createElement(LikeButton, null)
+                React.createElement(List, null)
             );
         }
     }]);

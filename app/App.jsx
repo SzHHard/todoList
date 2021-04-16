@@ -1,5 +1,4 @@
 'use strict';
-import { LikeButton } from './likeButton.js';
 import { List } from './list.js';
 
 const e = React.createElement;
@@ -17,7 +16,6 @@ class App extends React.Component {
         <div>
             <h1> Todos </h1>
             <List />
-            <LikeButton />
         </div>
         )
     }
