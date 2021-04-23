@@ -1,5 +1,8 @@
 'use strict';
-import { List } from './list.js';
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import { List } from './list.jsx';
 
 const e = React.createElement;
 const domContainer = document.getElementById('app');

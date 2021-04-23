@@ -1,4 +1,6 @@
 
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 export class Task extends React.Component {
     constructor(props) {
@@ -34,14 +36,14 @@ export class Task extends React.Component {
 
 const server = 'http://localhost:3000/api';
 const urlForGetAllRequest = server + '/tasks';
+const FILTER = { ALL: 'All', ACTIVE: 'Active', COMPLETED: 'Completed' }
 
 export class List extends React.Component {
 
-    static FILTER = { ALL: 'All', ACTIVE: 'Active', COMPLETED: 'Completed' }
 
     constructor(props) {
         super(props);
-        this.state = { tasks: [], filter: List.FILTER.ALL };
+        this.state = { tasks: [], filter: FILTER.ALL };
         this.handleEnter = this.handleEnter.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -134,8 +136,8 @@ export class List extends React.Component {
     render() {
         let currentTasks = this.state.tasks.map((task, index) => ({ task, index })).filter(({ task }) => {
             switch (this.state.filter) {
-                case List.FILTER.ACTIVE: return !task.completed;
-                case List.FILTER.COMPLETED: return task.completed;
+                case FILTER.ACTIVE: return !task.completed;
+                case FILTER.COMPLETED: return task.completed;
                 default: return true;
             }
         })
@@ -151,9 +153,9 @@ export class List extends React.Component {
                 </ul>
                 <div className="table-footer">
                     <p style={{ display: 'inline', marginRight: 25 }}>{tasksLeft} items left</p>
-                    <button className={this.state.filter === List.FILTER.ALL ? 'btnclicked' : null} onClick={() => this.handleFilter(List.FILTER.ALL)}>All</button>
-                    <button className={this.state.filter === List.FILTER.ACTIVE ? 'btnclicked' : null} onClick={() => this.handleFilter(List.FILTER.ACTIVE)}>Active</button>
-                    <button className={this.state.filter === List.FILTER.COMPLETED ? 'btnclicked' : null} onClick={() => this.handleFilter(List.FILTER.COMPLETED)}>Completed</button>
+                    <button className={this.state.filter === FILTER.ALL ? 'btnclicked' : null} onClick={() => this.handleFilter(FILTER.ALL)}>All</button>
+                    <button className={this.state.filter === FILTER.ACTIVE ? 'btnclicked' : null} onClick={() => this.handleFilter(FILTER.ACTIVE)}>Active</button>
+                    <button className={this.state.filter === FILTER.COMPLETED ? 'btnclicked' : null} onClick={() => this.handleFilter(FILTER.COMPLETED)}>Completed</button>
 
                     <button className='clear-compl' onClick={this.handleClearCompleted}>Clear Completed</button>
                 </div>

@@ -8,10 +8,7 @@ app.use(cors());
 app.use('/api', routerApi);
 app.use('/', express.static('public'));
 
-db.createTable(() => {
-    console.log("Start Listening at Port 3000");
-    app.listen(3000);
-})
+module.exports = { app, db }
 
 
 
