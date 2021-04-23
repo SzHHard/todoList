@@ -16,6 +16,7 @@ async function auth() {
         console.error('Unable to connect to the database:', error);
     }
 }
+//auth();
 
 const db = {};
 

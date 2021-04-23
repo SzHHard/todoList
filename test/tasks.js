@@ -5,13 +5,20 @@ const request = require('supertest');
 const db = require('../server/db');
 const app = express();
 const routerApi = require('../server/api');
+const { sequelize } = require('../server/db');
 
 app.use('/', routerApi);
 
 describe('todoList api v1', function () {
-    // before((done) => {
-    //     db.sequelize.sync().then(done)
-    // })
+    before((done) => {
+        
+       db.sequelize.sync({force: true}).then(() => {
+           console.log('Drop and re-sync db.');
+       })
+        
+        done();
+        
+    })
 
     describe('/tasks', function () {
 
@@ -35,6 +42,7 @@ describe('todoList api v1', function () {
                     request(app)
                         .get('/')
                         .expect((res) => {
+                         //   console.log(res);
                             assert.strictEqual(res.body[0].content, "hello, world")
                             assert.strictEqual(res.body[0].id, 1)
                         })

@@ -1,23 +1,28 @@
 const db = require("../db");
-const Task = db.task;
+//const Task = db.task;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Task
 exports.create = async (req, res) => {
+
+    console.log(req.body);
     // Validate request
-    if (!req.body.content) {
+    if (!req.body.text) {
+       // console.log('aye');
+       
         res.status(400).send({
             message: "Content can not be empty!"
         });
         return;
     }
     const task = {
-        content: req.body.content,
-        active: true
+        content: req.body.text,
+    //    active: true
     };
     try {
-        let data = await Task.create(task)
-        res.send(data);
+        let data = await db.task.create(task)
+        
+        res.status(201).send(data);
     } catch (err) {
         res.status(500).send({
             message:
@@ -29,9 +34,10 @@ exports.create = async (req, res) => {
 // Retrieve all Tasks from the database.
 exports.findAll = async (req, res) => {
     try {
-      let tasks = await Task.findAll()
+      let tasks = await db.task.findAll()
       res.send(tasks)
     } catch(err) {
+       // console.log(err);
         res.status(500).send({
             message: err.message || 'Some error occurred while retrieving tasks'
         });
