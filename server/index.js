@@ -9,10 +9,10 @@ app.use(cors());
 app.use('/api/tasks', routerApi);
 
 app.use('/', express.static('public'));
+module.exports = { app, db }
 
-db.sequelize.sync();
-console.log("Start Listening at Port 3000");
-app.listen(3000);
+
+
 
 
 
