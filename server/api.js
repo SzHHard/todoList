@@ -11,7 +11,7 @@ router.post("/", tasks.create)
 router.get("/", tasks.findAll);
 
 // Retrieve all published tasks
-router.get("/published", tasks.findAllPublished);
+router.get("/completed", tasks.findAllCompleted);
 
 // Retrieve a single Task with id
 router.get("/:id", tasks.findOne);

@@ -146,6 +146,15 @@ exports.deleteAll = (req, res) => {
 };
 
 // Find all published Tasks
-exports.findAllPublished = (req, res) => {
-
+exports.findAllCompleted = (req, res) => {
+  Task.findAll({ where: { active: false } })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tasks."
+      });
+    });
 };

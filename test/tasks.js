@@ -161,13 +161,34 @@ describe('todoList api v1', function () {
                                 .expect('Content-Type', /json/)
                                 .expect(200)
                                 .expect((res) => {
-                                    console.log(res.body)
                                     assert.strictEqual(res.body.length, 0)
                                 })
                                 .end(done);
                         })
                 })
+        })
 
+        it('on GET /completed should return all completed tasks', (done) => {
+            request(app)
+                .post('/')
+                .send({ text: 'forGetCompleted' })
+                .end((err, res) => {
+                    request(app)
+                        .put(`/${res.body.id}?active=false`)
+                        .end(() => {
+                            request(app)
+                                .get('/completed')
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .expect((res) => {
+                                    for (let i = 0; i < res.body.length; i++) {
+                                        assert.strictEqual(res.body[i].active, false)
+                                    };
+                                })
+                                .end(done);
+                        })
+                })
         })
 
         it('on GET should fail if passed an invalid task id', (done) => {
