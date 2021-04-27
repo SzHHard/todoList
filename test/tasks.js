@@ -145,8 +145,31 @@ describe('todoList api v1', function () {
                         })
                 });
         })
-    
-    
+
+        it('on DELETE without stated id should delete all tasks', (done) => {
+            request(app)
+                .post('/')
+                .send({ text: 'deleteAll test' })
+                .end(() => {
+                    request(app)
+                        .delete('/')
+                        .expect(204)
+                        .end(() => {
+                            request(app)
+                                .get('/')
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .expect((res) => {
+                                    console.log(res.body)
+                                    assert.strictEqual(res.body.length, 0)
+                                })
+                                .end(done);
+                        })
+                })
+
+        })
+
         it('on GET should fail if passed an invalid task id', (done) => {
             request(app)
                 .get('/1999922949')
