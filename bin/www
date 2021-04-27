@@ -4,7 +4,6 @@ var { app, db } = require('../server')
 
 db.sequelize.sync();
 
-
 console.log("Start Listening at localhost:3000");
 app.listen(3000);
 
