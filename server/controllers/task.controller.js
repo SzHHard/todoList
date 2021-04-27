@@ -72,13 +72,10 @@ exports.update = (req, res) => {
         {where: { id: id } }
         )
         .then(num => {
-            console.log(num)
             if (num == 1) {
               res.send();
             } else {
-              res.status(400).send({
-                message: `Cannot update Task with id=${id}. Maybe Task was not found or req.body is empty!`
-              });
+              res.status(400).send();
             }
           })
           .catch(err => {

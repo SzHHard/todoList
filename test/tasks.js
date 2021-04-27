@@ -161,7 +161,7 @@ describe('todoList api v1', function () {
         })
         it('on PUT should return 400 if invalid task id', (done) => {
             request(app)
-                .put('/1938427?completed=true')
+                .put('/1938427?active=true')
                 .expect(400)
                 .end(done)
         })
