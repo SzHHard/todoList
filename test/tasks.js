@@ -146,6 +146,31 @@ describe('todoList api v1', function () {
                 });
         })
 
+        it('on DELETE /clearCompleted should delete all completed tasks', (done) => {
+            request(app)
+                .post('/')
+                .send({ text: 'deleteAllCompleted test' })
+                .end(() => {
+                    request(app)
+                        .delete('/clearCompleted')
+                        .expect(204)
+                        .end(() => {
+                            request(app)
+                                .get('/')
+                                .set('Accept', 'application/json')
+                                .expect('Content-Type', /json/)
+                                .expect(200)
+                                .expect((res) => {
+                                    console.log(res.body)
+                                    for (let i = 0; i < res.body.length; i++) {
+                                        assert.strictEqual(res.body[i].active, true)
+                                    };
+                                })
+                                .end(done);
+                        })
+                })
+        })
+
         it('on DELETE without stated id should delete all tasks', (done) => {
             request(app)
                 .post('/')

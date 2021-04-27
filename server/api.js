@@ -19,10 +19,17 @@ router.get("/:id", tasks.findOne);
 // Update a Task with id
 router.put("/:id", tasks.update);
 
+
+router.delete("/clearCompleted", tasks.deleteAllCompleted);
+
 // Delete a Task with id
 router.delete("/:id", tasks.delete);
 
+
+
 // Delete all tasks
 router.delete("/", tasks.deleteAll);
+
+
 
 module.exports = router;
