@@ -1,6 +1,5 @@
 
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 export class Task extends React.Component {
     constructor(props) {
@@ -130,7 +129,10 @@ export class List extends React.Component {
     handleClearCompleted() {
         let tasks = this.state.tasks.filter((task) => { return !task.completed })
         this.setState({ tasks: tasks })
-
+        fetch(urlForGetAllRequest + '/clearCompleted', 
+        {
+            method: 'DELETE'
+        }) 
     }
 
     render() {
